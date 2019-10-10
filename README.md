@@ -73,3 +73,5 @@ If you want to ship new code to the trunk, please, run the script beforehands. I
 
         chmod +x verifycode.sh
         ./verifycode.sh
+        
+(If you are working under Windows, you can still execute this script, you only need to use a bash emulator, like GitBash)
