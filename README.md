@@ -1,5 +1,5 @@
-# iwbvt
-Intelligent Web-Based Vocabulary Teacher
+# iwsoj
+Intelligent Web-Based Scalable Online Judge
 
 # Workflow
 1. **master** is a protected branch - pushing directly to it blocked.
