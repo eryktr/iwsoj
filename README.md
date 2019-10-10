@@ -30,6 +30,11 @@ Intelligent Web-Based Scalable Online Judge
 
             python3 iwsoj/manage.py runserver
             
+Alternatively, if working under Linux:
+
+            chmod +x install.sh
+            ./isntall.sh
+            
  # Project structure
 ``` 
 iwsoj/
