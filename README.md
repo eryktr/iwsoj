@@ -11,6 +11,10 @@ Intelligent Web-Based Scalable Online Judge
 7. Code should be tested. **Unit tests**, maybe mocked, are enough to start with, but we will want to introduce integration testing later on.
 
 # Installation
+
+### ATTENTION
+If you are under Windows, replace all occurences of **python3** with **python**
+
 1. Clone the repository
 2. Move into the topmost **iwsoj** dir
 3. Make sure that **python3.7** is installed
