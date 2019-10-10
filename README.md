@@ -22,7 +22,8 @@ If you are under Windows, replace all occurences of **python3** with **python**
   
             python3 -m venv env
 
-5. Activate the newly generated environment:
+5. Activate the newly generated environment: 
+(On Windows, the path to the activate scipt will be env/Scripts/activate.bat)
 
             source env/bin/activate
             
