@@ -52,3 +52,15 @@ iwsoj/
     └── __init__.py
 ```
 
+# Tests
+To run Python tests, go into the main directory and execute
+
+        pytest <path/to/tests?>
+        
+To also obtain the coverage report, run 
+
+        pytest --cov=<path/to/tests?>
+        
+We want to get coverage as high as possible
+        
+ 

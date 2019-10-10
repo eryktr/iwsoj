@@ -1,5 +1,6 @@
 atomicwrites==1.3.0
 attrs==19.2.0
+coverage==4.5.4
 Django==2.2.6
 djangorestframework==3.10.3
 importlib-metadata==0.23
@@ -10,6 +11,7 @@ pluggy==0.13.0
 py==1.8.0
 pyparsing==2.4.2
 pytest==5.2.1
+pytest-cov==2.8.1
 pytz==2019.3
 six==1.12.0
 sqlparse==0.3.0
