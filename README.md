@@ -65,4 +65,7 @@ We want to get coverage as high as possible
         
  
 # Automatic code verificatoin
-If you want to ship new code to the trunk, please, run the **verifycode.sh** script beforehands. It will execute a pipeline of checks to assert that the code is good (properly formatted and unit tests are passing). 
+If you want to ship new code to the trunk, please, run the script beforehands. It will execute a pipeline of checks to assert that the code is good (properly formatted and unit tests are passing). 
+
+        chmod +x verifycode.sh
+        ./verifycode.sh
