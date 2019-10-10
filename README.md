@@ -11,6 +11,10 @@ Intelligent Web-Based Scalable Online Judge
 7. Code should be tested. **Unit tests**, maybe mocked, are enough to start with, but we will want to introduce integration testing later on.
 
 # Installation
+
+### ATTENTION
+If you are under Windows, replace all occurences of **python3** with **python**
+
 1. Clone the repository
 2. Move into the topmost **iwsoj** dir
 3. Make sure that **python3.7** is installed
@@ -18,7 +22,8 @@ Intelligent Web-Based Scalable Online Judge
   
             python3 -m venv env
 
-5. Activate the newly generated environment:
+5. Activate the newly generated environment: 
+(On Windows, the path to the activate scipt will be env/Scripts/activate.bat)
 
             source env/bin/activate
             
@@ -69,3 +74,5 @@ If you want to ship new code to the trunk, please, run the script beforehands. I
 
         chmod +x verifycode.sh
         ./verifycode.sh
+        
+(If you are working under Windows, you can still execute this script, you only need to use a bash emulator, like GitBash)
