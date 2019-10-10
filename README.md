@@ -31,7 +31,7 @@ Intelligent Web-Based Scalable Online Judge
             python3 iwsoj/manage.py runserver
             
  # Project structure
- 
+``` 
 iwsoj/
 ├── db.sqlite3 - dummy datbase, will be replaced later on
 ├── iwsoj
@@ -45,4 +45,5 @@ iwsoj/
 └── tests - all python tests go here
     ├── conftest.py - we put global-scope test fixtures into this file
     └── __init__.py
+```
 
