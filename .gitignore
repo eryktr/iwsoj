@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# IDE-specific settings dirs
+.idea
+.eclipse
+.vscode
