@@ -93,3 +93,7 @@ Since we will not be making any direct changes within that directory, it is unde
 
 ## UML Diagrams
 UML diagrams are part of documentation and should reside in the **doc/source/_diagram** tree.
+
+## API
+API documentation will be generated using a different tool and so will need to be treated in a different way.
+Put the specification and documentation under **doc/api**
