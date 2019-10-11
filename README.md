@@ -102,44 +102,50 @@ Put the specification and documentation under **doc/api**
 1. Task definition:
 ```json
 {
-  "inputLines": [
-    {
-      "arguments": [
-        {
-          "type": "int",
-          "value": 7
-        },
-        {
-          "type": "double",
-          "value": 3.14159
-        },
-        {
-          "type": "string",
-          "value": "noway"
-        }
-      ]
-    },
-    {
-      "arguments": [
-        {
-          "type": "int",
-          "value": 0
-        },
-        {
-          "type": "double",
-          "value": 0.0
-        },
-        {
-          "type": "string",
-          "value": "zero"
-        }
-      ]
-    }
-  ],
-
-  "outputLines": [
-    "Output from inputLine[0]",
-    "Output from inputLine[1]"
-  ]
+  "id": 1024,
+  "title": "Simple task",
+  "statement": "Solve me if u dare",
+  "createdate": "2019-10-11T20:30:08.207004Z",
+  "complexity": 2,
+  "definition": {
+    "inputLines": [
+      {
+        "arguments": [
+          {
+            "type": "int",
+            "value": 7
+          },
+          {
+            "type": "double",
+            "value": 3.14159
+          },
+          {
+            "type": "string",
+            "value": "noway"
+          }
+        ]
+      },
+      {
+        "arguments": [
+          {
+            "type": "int",
+            "value": 0
+          },
+          {
+            "type": "double",
+            "value": 0
+          },
+          {
+            "type": "string",
+            "value": "zero"
+          }
+        ]
+      }
+    ],
+    "outputLines": [
+      "Output from inputLine[0]",
+      "Output from inputLine[1]"
+    ]
+  }
 }
 ```
