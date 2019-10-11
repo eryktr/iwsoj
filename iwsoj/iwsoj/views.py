@@ -1,5 +1,5 @@
 from django.http import HttpResponse
 
 
-def helloworld(request):
-    return HttpResponse("Hello, world!", status=200)
+def home(request):
+    return HttpResponse("Nothing to find here. Use the /api tree.", status=404)

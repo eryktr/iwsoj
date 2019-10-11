@@ -1,5 +1,5 @@
 from django.urls import path
-from iwsoj.views import helloworld
+from iwsoj.views import home
 urlpatterns = [
-    path("", helloworld)
+    path("", home)
 ]
