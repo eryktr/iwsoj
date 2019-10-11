@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django_mysql.forms import JSONField
 
 from tasks.complexity import Complexity
 

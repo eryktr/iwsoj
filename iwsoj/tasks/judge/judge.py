@@ -1,7 +1,7 @@
 import json
+from typing import List
 
 from tasks.models import Task
-from typing import List
 
 
 def judge(task: Task, output: List[str]) -> bool:

@@ -2,8 +2,6 @@ import json
 
 from rest_framework.renderers import JSONRenderer
 
-from tasks.serializers.task_serializer import TaskSerializer
-
 
 def test_serializer_valid_task_definition(validserializer, validtask):
     j = JSONRenderer().render(validserializer.data)
