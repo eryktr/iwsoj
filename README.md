@@ -90,3 +90,6 @@ This will be typed manually into special LaTeX-like files.
 
 Both types of documentation will be compiled into HTML and CSS files and available in the **doc/build** directory.
 Since we will not be making any direct changes within that directory, it is under .gitignore
+
+## UML Diagrams
+UML diagrams are part of documentation and should reside in the **doc/source/_diagram** tree.
