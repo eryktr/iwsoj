@@ -97,3 +97,49 @@ UML diagrams are part of documentation and should reside in the **doc/source/_di
 ## API
 API documentation will be generated using a different tool and so will need to be treated in a different way.
 Put the specification and documentation under **doc/api**
+
+# JSON representations
+1. Task definition:
+```json
+{
+  "inputLines": [
+    {
+      "arguments": [
+        {
+          "type": "int",
+          "value": 7
+        },
+        {
+          "type": "double",
+          "value": 3.14159
+        },
+        {
+          "type": "string",
+          "value": "noway"
+        }
+      ]
+    },
+    {
+      "arguments": [
+        {
+          "type": "int",
+          "value": 0
+        },
+        {
+          "type": "double",
+          "value": 0.0
+        },
+        {
+          "type": "string",
+          "value": "zero"
+        }
+      ]
+    }
+  ],
+
+  "outputLines": [
+    "Output from inputLine[0]",
+    "Output from inputLine[1]"
+  ]
+}
+```
