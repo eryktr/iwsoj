@@ -1,4 +1,4 @@
-pytest --cov=iwsoj/tests || flake8 iwsoj
+pytest ./iwsoj --cov=iwsoj --cov-config=./iwsoj/.coveragerc || flake8 iwsoj
 ret=$?
 
 if [ $ret -eq 0 ]; then
