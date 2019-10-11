@@ -1,8 +1,4 @@
-import json
-
 from rest_framework import serializers
-from django.utils import timezone
-from rest_framework.parsers import JSONParser
 
 from tasks.models import Task
 

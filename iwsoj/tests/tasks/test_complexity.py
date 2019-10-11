@@ -7,3 +7,7 @@ def test_choices():
 
 def test_tostring():
     assert Complexity.tostring(2) == "MEDIUM"
+
+
+def test_enum_eq():
+    assert Complexity.EASY == 1
