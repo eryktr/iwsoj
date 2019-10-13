@@ -7,10 +7,10 @@ from users.serializers.user_serializer import UserSerializer
 def validated_data():
     return {
         "username": "testuser",
-        "password": "testpassword",
+        "password": "testpassword12!",
         "first_name": "firstname",
         "last_name": "lastname",
-        "email": "email.email@email",
+        "email": "email.email@email.com",
     }
 
 
