@@ -21,7 +21,7 @@ def test_create_valid_data_save_called(validated_data: dict, mocker):
 
 
 @pytest.mark.django_db
-def test_serializer_is_valid_for_valid_data(validated_data):
+def test_serializer_is_valid_for_valid_data(validated_data: dict):
     us = UserSerializer(data=validated_data)
     assert us.is_valid()
 

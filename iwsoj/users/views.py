@@ -1,6 +1,5 @@
 # Create your views here.
 
-from django.contrib.auth.models import User
 from django.http import HttpResponse
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
