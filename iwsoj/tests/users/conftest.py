@@ -19,4 +19,3 @@ def mocked_serializer(mocker):
     us = UserSerializer()
     mocker.patch.object(us, "_save_user", autospec=True)
     return us
-
