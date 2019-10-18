@@ -6,6 +6,7 @@ from users.serializers.user_serializer import UserSerializer
 from users.views import register
 
 
+
 def test_register_invalid_request():
     r = HttpRequest()
     r.DATA = {}
@@ -14,13 +15,10 @@ def test_register_invalid_request():
 
 
 @pytest.mark.django_db
-def test_register_ok(mocker, validated_data: dict):
+def test_register_ok(mocker, mocked_serializer: UserSerializer, validated_data: dict):
 	mocker.patch.object(User, "save")
-	request = HttpRequest()
-	request.DATA = validated_data
-	request.method = 'POST'
-	request.POST = {'id': '1', 'title': 'What?', 'statement': 'abcd', 
-	'createdate': '2019-10-17 11:11:11', 'complexity': '1', 'definition': 'ghi'}
-	serialized = UserSerializer(data=request.DATA)
-	resp = register(request)
+	r = HttpRequest()
+	r.DATA = validated_data
+	serialized = mocked_serializer.create(r.DATA)
+	resp = register(r)
 	assert resp.status_code == HTTP_201_CREATED
