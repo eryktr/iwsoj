@@ -1,7 +1,7 @@
 import pytest
 
 from runner.error import UnsupportedLangError
-from runner.runner import Lang, get_dockerfile_path
+from runner.runner import Lang, get_dockerfile_dir
 
 
 def test_lang_fromfile_ok():
@@ -19,5 +19,5 @@ def test_lang_tostring():
     assert py.tostring() == "Py3"
 
 
-def test_get_dockerfile_path():
-    assert str(get_dockerfile_path(Lang.C)).endswith("iwsoj/runner/imgs/c/Dockerfile")
+def test_get_dockerfile_dir():
+    assert get_dockerfile_dir(Lang.C).endswith("iwsoj/runner/imgs/c")
