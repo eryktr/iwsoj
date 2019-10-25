@@ -3,7 +3,6 @@ import enum
 import docker
 import shutil
 import logging
-import tempfile
 
 from collections import Mapping
 from pathlib import Path
@@ -11,7 +10,9 @@ from typing import Any
 
 from runner.error import UnsupportedLangError
 
+logging.basicConfig()
 _logger = logging.getLogger(__name__)
+_logger.setLevel(logging.INFO)
 
 
 class Lang(enum.Enum):
@@ -51,19 +52,29 @@ def get_dockerfile_dir(lang: Lang) -> str:
     return str(Path(__file__).parent / 'imgs' / lang.tostring().lower())
 
 
-def ctx2cwd(dockerfile_path) -> None:
+def ctx2cwd(dockerfile_path, codefile_path) -> None:
     """
     Copies the context of the build process
     into the current working directory
     :param dockerfile_path: The path to the directory containing dockerfile
+    :param codefile_path: The path to the source file
     """
 
     for f in os.listdir(dockerfile_path):
-        shutil.copy2(f, os.path.dirname(__file__))
+        shutil.copy2(os.path.join(dockerfile_path, f), os.getcwd())
+    shutil.copy2(codefile_path, os.getcwd())
 
 
-def ctxcleanup():
-    pass
+def cwdctxcleanup(dockerfile_path, codefile_path):
+    """
+    The lower your understanding of what it does,
+    the lower the likelihood that you might use it.
+    """
+    to_delete = (os.path.basename(f) for f in os.listdir(dockerfile_path))
+
+    for f in to_delete:
+        os.remove(os.path.join(os.getcwd(), f))
+    os.remove(os.path.join(os.getcwd(), os.path.basename(codefile_path)))
 
 
 def soSorryYouLose(codefpath: str) -> str:
@@ -74,21 +85,17 @@ def soSorryYouLose(codefpath: str) -> str:
     """
 
     imagetag = "runner"
-
-    _logger.setLevel(logging.INFO)
-
     lang = Lang.from_file(codefpath)
 
     dockerfile_path = get_dockerfile_dir(lang)
-
-    _logger.error("Establishing connection to the docker client")
     dockerc = docker.from_env()
 
     try:
-        _logger.error("Building container image...")
-        dockerc.images.build(path=".", buildargs={"fpath": codefpath}, tag=imagetag, rm=1)
+        ctx2cwd(dockerfile_path, codefpath)
+        short_codefname = os.path.basename(codefpath)
+        dockerc.images.build(path="./", buildargs={"fpath": short_codefname}, tag=imagetag, rm=1)
     finally:
+        cwdctxcleanup(dockerfile_path, codefpath)
 
-        _logger.info("Executing the solution...")
-
-    return dockerc.containers.run(imagetag)
+    info = dockerc.containers.run(imagetag)
+    return info.decode("utf8")
