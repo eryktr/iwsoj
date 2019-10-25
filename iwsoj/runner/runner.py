@@ -1,5 +1,6 @@
 import enum
 from collections import Mapping
+from pathlib import Path
 from typing import Any
 
 from runner.error import UnsupportedLangError
@@ -34,9 +35,14 @@ class Lang(enum.Enum):
         except KeyError:
             raise UnsupportedLangError(fpath)
 
+    def tostring(self):
+        return next(name for name, val in Lang.__members__.items() if val.value == self.value)
 
-def grab_dockerfile():
-    pass
+
+def get_dockerfile_path(lang: Lang) -> str:
+    return Path(__file__).parent / 'imgs' / lang.tostring().lower() / 'Dockerfile'
+
 
 def runcode(fpath):
     lang = Lang.from_file(fpath)
+    dockerfile_path = get_dockerfile_path(lang)
