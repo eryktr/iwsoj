@@ -3,7 +3,7 @@ from tasks.judge.judge import judge
 
 def test_judge_ok_solution(validtask):
     print(validtask)
-    output = ["Output from inputLine[0]", "Output from inputLine[1]"]
+    output = ["OutputLine[0]", "OutputLine[1]"]
     assert judge(validtask, output)
 
 

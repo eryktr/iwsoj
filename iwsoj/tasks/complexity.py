@@ -9,8 +9,8 @@ class Complexity(enum.IntEnum):
 
     @classmethod
     def choices(cls):
-        return tuple((i.name, i.value) for i in cls)
+        return tuple((i.value, i.name) for i in cls)
 
     @classmethod
     def tostring(cls, val):
-        return next(filter(lambda x: x[1] == val, cls.choices()))[0]
+        return next(filter(lambda x: x[0] == val, cls.choices()))[1]
