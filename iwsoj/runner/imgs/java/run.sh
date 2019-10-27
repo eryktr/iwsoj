@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-cd /runner
-javac target.java
-java Main
+cd /runner;
+javac target.java;
+java Main;
