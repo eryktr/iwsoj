@@ -93,7 +93,7 @@ def soSorryYouLose(codefpath: str) -> str:
     try:
         ctx2cwd(dockerfile_path, codefpath)
         short_codefname = os.path.basename(codefpath)
-        dockerc.images.build(path="./", buildargs={"fpath": short_codefname}, tag=imagetag, rm=True)
+        dockerc.images.build(path=os.getcwd(), buildargs={"fpath": short_codefname}, tag=imagetag, rm=True)
         info = dockerc.containers.run(imagetag, remove=True)
         return info.decode("utf8")
 

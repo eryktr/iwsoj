@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-cd /runner
-export GOPATH=$(pwd)
-go run target.go
+cd /runner;
+export GOPATH=$(pwd);
+go run target.go;
