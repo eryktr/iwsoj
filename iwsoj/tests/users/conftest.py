@@ -1,7 +1,5 @@
 import pytest
 
-from users.serializers.user_serializer import UserSerializer
-
 
 @pytest.fixture()
 def validated_data():

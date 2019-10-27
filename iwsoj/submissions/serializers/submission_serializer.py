@@ -16,6 +16,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
     def create(self, validated_data) -> Submission:
         submission = Submission.objects.create(
             sourceCode=validated_data["sourceCode"],
-            language=validated_data["language"]
+            language=validated_data["language"],
+            task=validated_data['task'],
+            user=self.context['request'].user
         )
         return submission
