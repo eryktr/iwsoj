@@ -9,9 +9,11 @@ from runner.error import UnsupportedLangError, CompilationError, InvalidPathErro
 from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose
 
 
-def test_lang_fromfile_ok():
-    assert Lang.from_file("helloworld.c") is Lang.C
-    assert Lang.from_file("byeworld.py") is Lang.Py3
+@pytest.mark.parametrize("string, lang",
+                         [("helloworld.c", Lang.C), ("byeworld.py", Lang.Py3), ("plsno.java", Lang.Java),
+                          ("csharp.cpp", Lang.Cpp), ("goaway.go", Lang.Go), ("/complex/path/to/file.go", Lang.Go)])
+def test_lang_fromfile_ok(string, lang):
+    assert Lang.from_file(string) is lang
 
 
 def test_lang_fromfile_unsupported():
