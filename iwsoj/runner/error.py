@@ -3,3 +3,7 @@ class UnsupportedLangError(ValueError):
 
     def __init__(self, lang: str):
         super().__init__(self.FAIL_MSG.format(lang))
+
+
+class CompilationError(ValueError):
+    pass
