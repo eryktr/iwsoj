@@ -42,9 +42,15 @@ def test_lang_tostring(lang, string):
     assert lang.tostring() == string
 
 
-def test_get_dockerfile_dir():
-    sep = os.sep
-    assert get_dockerfile_dir(Lang.C).endswith("iwsoj" + sep + "runner" + sep + "imgs" + sep + "c")
+sep = os.sep
+basepath = f"iwsoj{sep}runner{sep}imgs"
+ending = lambda l: f"{basepath}{sep}{l}"
+
+
+@pytest.mark.parametrize("lang, end", [(Lang.C, ending("c")), (Lang.Cpp, ending("cpp")), (Lang.Java, ending("java")),
+                                       (Lang.Go, ending("go")), (Lang.Py3, ending("py3"))])
+def test_get_dockerfile_dir(lang, end):
+    assert get_dockerfile_dir(lang).endswith(end)
 
 
 dummypath = Path.cwd() / 'runner' / 'dummy'
