@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import os
 import pytest
 
 from runner.error import UnsupportedLangError
@@ -22,7 +23,8 @@ def test_lang_tostring():
 
 
 def test_get_dockerfile_dir():
-    assert get_dockerfile_dir(Lang.C).endswith("iwsoj/runner/imgs/c")
+    sep = os.sep
+    assert get_dockerfile_dir(Lang.C).endswith("iwsoj" + sep + "runner" + sep + "imgs" + sep + "c")
 
 
 dummypath = Path.cwd() / 'runner' / 'dummy'
@@ -51,3 +53,7 @@ def test_runner_java_ok():
 @pytest.mark.integration
 def test_runner_go_ok():
     assert soSorryYouLose(str(dummypath / 'dummy.go')) == "GO somewhere else!\n"
+
+@pytest.mark.integration
+def test_runner_c_stdin_ok():
+    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c')) == "It takes 8 bits to represent 220\n"
