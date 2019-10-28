@@ -3,4 +3,4 @@
 cd /runner;
 gcc target.c -o ./exec;
 chmod +x ./exec;
-./exec;
+./exec < /runner/input.txt;

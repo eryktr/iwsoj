@@ -1,10 +1,11 @@
 from pathlib import Path
 
+import os
 import pytest
+from docker.errors import ContainerError
 
-from runner.error import UnsupportedLangError
+from runner.error import UnsupportedLangError, CompilationError
 from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose
-
 
 def test_lang_fromfile_ok():
     assert Lang.from_file("helloworld.c") is Lang.C
@@ -22,7 +23,8 @@ def test_lang_tostring():
 
 
 def test_get_dockerfile_dir():
-    assert get_dockerfile_dir(Lang.C).endswith("iwsoj/runner/imgs/c")
+    sep = os.sep
+    assert get_dockerfile_dir(Lang.C).endswith("iwsoj" + sep + "runner" + sep + "imgs" + sep + "c")
 
 
 dummypath = Path.cwd() / 'runner' / 'dummy'
@@ -51,3 +53,14 @@ def test_runner_java_ok():
 @pytest.mark.integration
 def test_runner_go_ok():
     assert soSorryYouLose(str(dummypath / 'dummy.go')) == "GO somewhere else!\n"
+
+@pytest.mark.integration
+def test_runner_c_stdin_ok():
+    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c')) == "It takes 8 bits to represent 220\n"
+
+@pytest.mark.integration
+def test_runner_compile_error():
+    try:
+        print(soSorryYouLose(str(dummypath / 'dummy_iwontcompile.c')))
+    except ContainerError as err:
+        assert 1
