@@ -34,9 +34,10 @@ def test_lang_fromfile_path_too_long():
     assert str(err.value) == f"Path too long: {pth}"
 
 
-def test_lang_tostring():
-    py = Lang.Py3
-    assert py.tostring() == "Py3"
+@pytest.mark.parametrize("lang, string",
+                         [(Lang.Py3, "Py3"), (Lang.Go, "Go"), (Lang.Cpp, "Cpp"), (Lang.C, "C"), (Lang.Java, "Java")])
+def test_lang_tostring(lang, string):
+    assert lang.tostring() == string
 
 
 def test_get_dockerfile_dir():
@@ -48,9 +49,16 @@ dummypath = Path.cwd() / 'runner' / 'dummy'
 
 
 @pytest.mark.integration
-def test_runner_codefile_doesnt_exist():
+def test_runner_fails_file_doesnt_exist():
     with pytest.raises(FileNotFoundError):
         soSorryYouLose("/path/to/nowhere.c")
+
+
+@pytest.mark.parametrize("path", ["/path/to/dir", "a" * 400 + ".c", "a.b.c", "/path/app.kt", "", "~"])
+@pytest.mark.integration
+def test_runner_fails_for_invalid_path(path):
+    with pytest.raises(ValueError):
+        soSorryYouLose(path)
 
 
 @pytest.mark.integration

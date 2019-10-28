@@ -105,4 +105,3 @@ def soSorryYouLose(codefpath: str) -> str:
     finally:
         cwdctxcleanup(dockerfile_path, codefpath)
         dockerc.images.remove(imagetag)
-
