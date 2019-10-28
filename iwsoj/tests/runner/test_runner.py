@@ -1,11 +1,13 @@
+from builtins import FileNotFoundError
 from pathlib import Path
 
 import os
 import pytest
 from docker.errors import ContainerError
 
-from runner.error import UnsupportedLangError, CompilationError
+from runner.error import UnsupportedLangError, CompilationError, InvalidPathError, PathTooLongError
 from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose
+
 
 def test_lang_fromfile_ok():
     assert Lang.from_file("helloworld.c") is Lang.C
@@ -13,8 +15,23 @@ def test_lang_fromfile_ok():
 
 
 def test_lang_fromfile_unsupported():
-    with pytest.raises(UnsupportedLangError):
+    with pytest.raises(UnsupportedLangError) as err:
         Lang.from_file("omgwhoousesada.ada")
+    assert str(err.value) == f"The .ada extension is currently not supported."
+
+
+def test_lang_fromfile_invalidpath():
+    pth = "/i/know/that/i.wont.work.cpp"
+    with pytest.raises(InvalidPathError) as err:
+        Lang.from_file(pth)
+    assert str(err.value) == f"Invalid path: {pth}"
+
+
+def test_lang_fromfile_path_too_long():
+    pth = "/wtfisthat" * 100 + ".java"
+    with pytest.raises(PathTooLongError) as err:
+        Lang.from_file(pth)
+    assert str(err.value) == f"Path too long: {pth}"
 
 
 def test_lang_tostring():
@@ -28,6 +45,12 @@ def test_get_dockerfile_dir():
 
 
 dummypath = Path.cwd() / 'runner' / 'dummy'
+
+
+@pytest.mark.integration
+def test_runner_codefile_doesnt_exist():
+    with pytest.raises(FileNotFoundError):
+        soSorryYouLose("/path/to/nowhere.c")
 
 
 @pytest.mark.integration
@@ -54,9 +77,11 @@ def test_runner_java_ok():
 def test_runner_go_ok():
     assert soSorryYouLose(str(dummypath / 'dummy.go')) == "GO somewhere else!\n"
 
+
 @pytest.mark.integration
 def test_runner_c_stdin_ok():
     assert soSorryYouLose(str(dummypath / 'dummy_stdin.c')) == "It takes 8 bits to represent 220\n"
+
 
 @pytest.mark.integration
 def test_runner_compile_error():
