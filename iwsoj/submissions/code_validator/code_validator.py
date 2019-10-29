@@ -30,7 +30,10 @@ def validate_code(sourceCode, language_name, task):
         return Status.WA,
 
 def create_tmp_file(name, input):
-    path = os.path.join(os.getcwd(), "tmp", name)
+    tmp_dir = os.path.join(os.getcwd(), "tmp")
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+    path = os.path.join(tmp_dir, name)
     code_file = open(path, "w")
     code_file.write(input)
     code_file.close()
