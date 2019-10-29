@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from submissions.models import Submission
-#from submissions.tester.tester import validate_code
+from submissions.code_validator.code_validator import validate_code
+from submissions.status import Status
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
@@ -18,12 +19,26 @@ class SubmissionSerializer(serializers.ModelSerializer):
         sourceCode = validated_data['sourceCode']
         task = validated_data['task']
         language = validated_data["language"]
-        status = 0 #validate_code(sourceCode, language, task)
+        validation_out = self._validate(sourceCode, language, task)
+        status = validation_out[0]
+        if status == Status.CE:
+            error = validation_out[1]
+        else:
+            error = None
+
         submission = Submission.objects.create(
             sourceCode=sourceCode,
             language=language,
             task=task,
-            user=self.context['request'].user,
-            status=status
+            user=self._get_user(),
+            status=status.value,
+            error=error
         )
         return submission
+
+    # extracted for mock
+    def _validate(self, source_code, language, task):
+        return validate_code(source_code, language, task)
+
+    def _get_user(self):
+        return self.context['request'].user

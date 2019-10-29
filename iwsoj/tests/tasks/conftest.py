@@ -13,28 +13,19 @@ def emptytask():
 def validtask():
     data = get_valid_task_data()
     t = Task()
-    t.definition = data['definition']
+    t.input = data['input']
+    t.output = data['output']
     t.statement = data['statement']
     t.title = data['title']
     return t
 
 
 def get_valid_task_data():
-    definition = json.dumps({
-        "inputLines": [
-            "InputLine[1]",
-            "InputLine[2]"
-        ],
-        "outputLines": [
-            "OutputLine[0]",
-            "OutputLine[1]"
-        ]
-    })
-
     return {
         "title": "Simple task",
         "statement": "Solve me if u dare",
         "complexity": 2,
-        "definition": definition
+        "input": "InputLine[1]\nInputLine[2]",
+        "output": "OutputLine[0]\nOutputLine[1]"
     }
 

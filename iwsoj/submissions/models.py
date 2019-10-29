@@ -13,3 +13,4 @@ class Submission(models.Model):
     sourceCode = models.TextField()
     language = models.CharField(choices=Language.choices(), max_length=8)
     createdate = models.DateTimeField(default=timezone.now)
+    error = models.TextField(null=True)

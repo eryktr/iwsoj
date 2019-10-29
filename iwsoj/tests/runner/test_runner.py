@@ -32,28 +32,28 @@ dummypath = Path.cwd() / 'runner' / 'dummy'
 
 @pytest.mark.integration
 def test_runner_c_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy.c')) == "It takes 8 bits to represent 222\n"
+    assert soSorryYouLose(str(dummypath / 'dummy.c'), str(dummypath / "dummy_input.txt")) == "It takes 8 bits to represent 222\n"
 
 
 @pytest.mark.integration
 def test_runner_cpp_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy.cpp')) == "Distance from p1 and p2 is 0\n"
+    assert soSorryYouLose(str(dummypath / 'dummy.cpp'), str(dummypath / "dummy_input.txt")) == "Distance from p1 and p2 is 0\n"
 
 
 @pytest.mark.integration
 def test_runner_py3_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy.py')) == "The 10th Fib number is 55\n"
+    assert soSorryYouLose(str(dummypath / 'dummy.py'), str(dummypath / "dummy_input.txt")) == "The 10th Fib number is 55\n"
 
 
 @pytest.mark.integration
 def test_runner_java_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy.java')) == "Factorial of 4 is 24\n"
+    assert soSorryYouLose(str(dummypath / 'dummy.java'), str(dummypath / "dummy_input.txt")) == "Factorial of 4 is 24\n"
 
 
 @pytest.mark.integration
 def test_runner_go_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy.go')) == "GO somewhere else!\n"
+    assert soSorryYouLose(str(dummypath / 'dummy.go'), str(dummypath / "dummy_input.txt")) == "GO somewhere else!\n"
 
 @pytest.mark.integration
 def test_runner_c_stdin_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c')) == "It takes 8 bits to represent 220\n"
+    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c'), str(dummypath / "dummy_input.txt")) == "It takes 8 bits to represent 220\n"

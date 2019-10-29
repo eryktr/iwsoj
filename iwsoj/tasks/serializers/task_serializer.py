@@ -15,6 +15,7 @@ class TaskSerializer(serializers.ModelSerializer):
             title=validated_data['title'],
             statement=validated_data['statement'],
             complexity=validated_data['complexity'],
-            definition=validated_data['definition'],
+            input=validated_data['input'],
+            output=validated_data['output']
         )
         return task

@@ -4,14 +4,8 @@
   "statement": "Solve me if u dare",
   "createdate": "2019-10-11T20:30:08.207004Z",
   "complexity": 2,
-  "definition": {
-    "inputLines": [
-      "InputLine[1]",
-      "InputLine[2]"
-    ],
-    "outputLines": [
-      "OutputLine[0]",
-      "OutputLine[1]"
-    ]
-  }
+  "input":
+      "InputLine[1]\nInputLine[2]",
+  "output":
+      "OutputLine[0]\nOutputLine[1]"
 }

@@ -17,6 +17,7 @@ def test_api_submissions(valid_user_serializer, valid_task_serializer):
     }
 
     factory = APIRequestFactory()
+
     view = SubmissionViewSet.as_view({'post': 'create', 'get': 'retrieve'})
 
     request = factory.post("/api/submissions/", data=data)

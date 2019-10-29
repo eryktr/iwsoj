@@ -1,26 +1,25 @@
-import json
-
 import pytest
-from django.contrib.auth.models import User
 
 from submissions.models import Submission
-from submissions.serializers.submission_serializer import SubmissionSerializer
-from tasks.models import Task
 from tasks.serializers.task_serializer import TaskSerializer
 from users.serializers.user_serializer import UserSerializer
 
 
 @pytest.fixture()
-def valid_submission(valid_task_serializer, valid_user_serializer):
+def valid_submission(valid_submission_data):
+    return Submission(**valid_submission_data)
+
+
+@pytest.fixture()
+def valid_submission_data(valid_task_serializer, valid_user_serializer):
     valid_task = valid_task_serializer.save()
     valid_user = valid_user_serializer.save()
-    data = {
+    return {
         "user": valid_user,
         "task": valid_task,
         "language": "Java",
         "sourceCode": "This code causes a compilation error"
     }
-    return Submission(**data)
 
 
 @pytest.fixture()
@@ -51,22 +50,12 @@ def valid_user_data():
 
 @pytest.fixture()
 def valid_task_data():
-    definition = json.dumps({
-        "inputLines": [
-            "InputLine[1]",
-            "InputLine[2]"
-        ],
-        "outputLines": [
-            "OutputLine[0]",
-            "OutputLine[1]"
-        ]
-    })
-
     return {
         "title": "Simple task",
-        "statement": "Solve me if u dare",
+        "statement": "Multiply by two!",
         "complexity": 2,
-        "definition": definition
+        "input": "1 input",
+        "output": "2 output"
     }
 
 
