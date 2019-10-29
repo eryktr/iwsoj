@@ -8,7 +8,7 @@ from collections import Mapping
 from pathlib import Path
 from typing import Any
 
-from runner.error import UnsupportedLangError
+from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError
 
 logging.basicConfig()
 _logger = logging.getLogger(__name__)
@@ -29,7 +29,12 @@ class Lang(enum.Enum):
         target language extension.
         :return: The enum value corresponding to the language that matches the extension
         """
-        ext = codefpath.split(".")[1]
+        if len(codefpath) > 255:
+            raise PathTooLongError(codefpath)
+        split = codefpath.split(".")
+        if len(split) != 2:
+            raise InvalidPathError(codefpath)
+        ext = split[1]
 
         _extmap: Mapping[str, Lang] = {
             "c": cls.C,
@@ -42,7 +47,7 @@ class Lang(enum.Enum):
         try:
             return _extmap[ext]
         except KeyError:
-            raise UnsupportedLangError(codefpath)
+            raise UnsupportedLangError("."+codefpath.split(".")[-1])
 
     def tostring(self):
         return next(name for name, val in Lang.__members__.items() if val.value == self.value)
@@ -100,4 +105,3 @@ def soSorryYouLose(codefpath: str) -> str:
     finally:
         cwdctxcleanup(dockerfile_path, codefpath)
         dockerc.images.remove(imagetag)
-
