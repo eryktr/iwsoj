@@ -5,7 +5,7 @@ import os
 import pytest
 from docker.errors import ContainerError
 
-from runner.error import UnsupportedLangError, CompilationError, InvalidPathError, PathTooLongError
+from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError
 from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose
 
 
@@ -57,16 +57,20 @@ dummypath = Path.cwd() / 'runner' / 'dummy'
 
 
 @pytest.mark.integration
-def test_runner_fails_file_doesnt_exist():
+def test_runner_fails_code_file_doesnt_exist():
     with pytest.raises(FileNotFoundError):
-        soSorryYouLose("/path/to/nowhere.c")
+        soSorryYouLose("/path/to/nowhere.c", str(dummypath / 'dummy_input.txt'))
 
+@pytest.mark.integration
+def test_runner_fails_stdin_file_doesnt_exist():
+    with pytest.raises(FileNotFoundError):
+        soSorryYouLose(str(dummypath / 'dummy.c'), "/path/to/nowhere.txt")
 
 @pytest.mark.parametrize("path", ["/path/to/dir", "a" * 400 + ".c", "a.b.c", "/path/app.kt", "", "~"])
 @pytest.mark.integration
 def test_runner_fails_for_invalid_path(path):
     with pytest.raises(ValueError):
-        soSorryYouLose(path)
+        soSorryYouLose(path, str(dummypath / 'dummy_input.txt'))
 
 
 @pytest.mark.integration
@@ -91,17 +95,19 @@ def test_runner_java_ok():
 
 @pytest.mark.integration
 def test_runner_go_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy.go')) == "GO somewhere else!\n"
+    assert soSorryYouLose(str(dummypath / 'dummy.go'), str(dummypath / 'dummy_input.txt')) == "GO somewhere else!\n"
 
 
 @pytest.mark.integration
 def test_runner_c_stdin_ok():
-    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c')) == "It takes 8 bits to represent 220\n"
+    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c'), str(dummypath / 'dummy_input.txt')) == "It takes 8 bits to represent 220\n"
 
 
 @pytest.mark.integration
 def test_runner_compile_error():
     try:
-        print(soSorryYouLose(str(dummypath / 'dummy_iwontcompile.c')))
+        print(soSorryYouLose(str(dummypath / 'dummy_iwontcompile.c'), str(dummypath / 'dummy_input.txt')))
     except ContainerError as err:
         assert 1
+
+
