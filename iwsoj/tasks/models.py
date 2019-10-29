@@ -9,4 +9,5 @@ class Task(models.Model):
     statement = models.TextField()
     createdate = models.DateTimeField(default=timezone.now)
     complexity = models.IntegerField(choices=Complexity.choices())
-    definition = models.TextField()
+    input = models.TextField()
+    output = models.TextField()

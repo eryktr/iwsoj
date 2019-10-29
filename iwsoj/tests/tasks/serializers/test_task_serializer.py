@@ -5,8 +5,9 @@ from rest_framework.renderers import JSONRenderer
 
 def test_serializer_valid_task_definition(validserializer, validtask):
     j = JSONRenderer().render(validserializer.data)
+    print(j)
     obj = json.loads(j)
-    assert obj["definition"] == validtask.definition
+    assert obj["input"] == validtask.input
 
 
 def test_json_has_valid_fields(validserializer, validtask):

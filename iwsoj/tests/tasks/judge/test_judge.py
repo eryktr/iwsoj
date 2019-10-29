@@ -3,10 +3,10 @@ from tasks.judge.judge import judge
 
 def test_judge_ok_solution(validtask):
     print(validtask)
-    output = ["Output from inputLine[0]", "Output from inputLine[1]"]
+    output = "OutputLine[0]\nOutputLine[1]"
     assert judge(validtask, output)
 
 
 def test_judge_wrong_solution(validtask):
-    output = ["fundamentally", "wrong"]
+    output = "fundamentally\nwrong"
     assert not judge(validtask, output)

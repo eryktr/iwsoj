@@ -9,51 +9,23 @@ from tasks.models import Task
 def emptytask():
     return Task()
 
-
 @pytest.fixture()
 def validtask():
+    data = get_valid_task_data()
     t = Task()
-    t.title = "Simple task"
-    t.statement = "Solve me if u dare"
-    t.definition = json.dumps({
-        "inputLines": [
-            {
-                "arguments": [
-                    {
-                        "type": "int",
-                        "value": 7
-                    },
-                    {
-                        "type": "double",
-                        "value": 3.14159
-                    },
-                    {
-                        "type": "string",
-                        "value": "noway"
-                    }
-                ]
-            },
-            {
-                "arguments": [
-                    {
-                        "type": "int",
-                        "value": 0
-                    },
-                    {
-                        "type": "double",
-                        "value": 0.0
-                    },
-                    {
-                        "type": "string",
-                        "value": "zero"
-                    }
-                ]
-            }
-        ],
-
-        "outputLines": [
-            "Output from inputLine[0]",
-            "Output from inputLine[1]"
-        ]
-    })
+    t.input = data['input']
+    t.output = data['output']
+    t.statement = data['statement']
+    t.title = data['title']
     return t
+
+
+def get_valid_task_data():
+    return {
+        "title": "Simple task",
+        "statement": "Solve me if u dare",
+        "complexity": 2,
+        "input": "InputLine[1]\nInputLine[2]",
+        "output": "OutputLine[0]\nOutputLine[1]"
+    }
+

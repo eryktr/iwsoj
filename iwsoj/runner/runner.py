@@ -57,7 +57,7 @@ def get_dockerfile_dir(lang: Lang) -> str:
     return str(Path(__file__).parent / 'imgs' / lang.tostring().lower())
 
 
-def ctx2cwd(dockerfile_path, codefile_path) -> None:
+def ctx2cwd(dockerfile_path, codefile_path, stdinfile_path) -> None:
     """
     Copies the context of the build process
     into the current working directory
@@ -68,11 +68,12 @@ def ctx2cwd(dockerfile_path, codefile_path) -> None:
     for f in os.listdir(dockerfile_path):
         shutil.copy2(os.path.join(dockerfile_path, f), os.getcwd())
     shutil.copy2(codefile_path, os.getcwd())
+    shutil.copy2(stdinfile_path, os.getcwd())
 
 
-def cwdctxcleanup(dockerfile_path, codefile_path):
+def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
     """
-    The lower your understanding of what it does,
+    The bigger your understanding of what it does,
     the lower the likelihood that you might use it.
     """
     to_delete = (os.path.basename(f) for f in os.listdir(dockerfile_path))
@@ -80,12 +81,14 @@ def cwdctxcleanup(dockerfile_path, codefile_path):
     for f in to_delete:
         os.remove(os.path.join(os.getcwd(), f))
     os.remove(os.path.join(os.getcwd(), os.path.basename(codefile_path)))
+    os.remove(os.path.join(os.getcwd(), os.path.basename(stdinfile_path)))
 
 
-def soSorryYouLose(codefpath: str) -> str:
+def soSorryYouLose(codefpath: str, stdinfpath: str) -> str:
     """
     Executes the
     :param codefpath: The path to the code to be run
+    :param stdinfpath: The path to the input file
     :return: stdout of both the compile and the run step of the file in question
     """
 
@@ -96,12 +99,13 @@ def soSorryYouLose(codefpath: str) -> str:
     dockerc = docker.from_env()
 
     try:
-        ctx2cwd(dockerfile_path, codefpath)
+        ctx2cwd(dockerfile_path, codefpath, stdinfpath)
         short_codefname = os.path.basename(codefpath)
-        dockerc.images.build(path=os.getcwd(), buildargs={"fpath": short_codefname}, tag=imagetag, rm=True)
+        short_stdinfname = os.path.basename(stdinfpath)
+        dockerc.images.build(path=os.getcwd(), buildargs={"fpath": short_codefname, "stdinfpath": short_stdinfname}, tag=imagetag, rm=True)
         info = dockerc.containers.run(imagetag, remove=True)
         return info.decode("utf8")
 
     finally:
-        cwdctxcleanup(dockerfile_path, codefpath)
+        cwdctxcleanup(dockerfile_path, codefpath, stdinfpath)
         dockerc.images.remove(imagetag)

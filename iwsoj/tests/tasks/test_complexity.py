@@ -2,7 +2,7 @@ from tasks.complexity import Complexity
 
 
 def test_choices():
-    assert Complexity.choices() == (("EASY", 1), ("MEDIUM", 2), ("HARD", 3), ("COMPETITIVE", 4))
+    assert Complexity.choices() == ((1, 'EASY'), (2, 'MEDIUM'), (3, 'HARD'), (4, 'COMPETITIVE'))
 
 
 def test_tostring():
