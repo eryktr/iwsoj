@@ -36,6 +36,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000','http://localhost:3000/login',
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3000','http://localhost:3000/login',
 ]
 
 ROOT_URLCONF = 'iwsoj.urls'
