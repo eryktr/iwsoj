@@ -1,6 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 Other sources: (https://github.com/hamza-mirza/react-router)
 (https://codeburst.io/getting-started-with-react-router-5c978f70df91).
+Author of all .html and .css files:
+Arkadiusz Dębski
 
 ## Available Scripts
 
