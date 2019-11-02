@@ -46,7 +46,12 @@ CORS_ORIGIN_WHITELIST = [
 ]
 CORS_ORIGIN_REGEX_WHITELIST = [
     'http://localhost:3000','http://localhost:3000/login',
+
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = []
 
 ROOT_URLCONF = 'iwsoj.urls'
 
