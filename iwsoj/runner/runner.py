@@ -122,4 +122,4 @@ def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
 
     finally:
         cwdctxcleanup(dockerfile_path, codefpath, stdinfpath)
-        dockerc.images.remove(imagetag)
+        dockerc.images.remove(imagetag, force=True)
