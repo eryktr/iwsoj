@@ -28,6 +28,7 @@ def validate_code(sourceCode, language_name, task):
     else:
         return Status.WA,
 
+
 def create_tmp_file(name, input):
     tmp_dir = os.path.join(os.getcwd(), "tmp")
     if not os.path.exists(tmp_dir):
