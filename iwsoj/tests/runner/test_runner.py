@@ -54,7 +54,7 @@ def test_get_dockerfile_dir(lang, end):
 
 
 dummypath = Path.cwd() / 'runner' / 'dummy'
-
+algorithmpath = Path.cwd() / 'runner' / 'algorithm'
 
 @pytest.mark.integration
 def test_runner_fails_code_file_doesnt_exist():
@@ -103,6 +103,26 @@ def test_runner_c_stdin_ok():
     assert soSorryYouLose(str(dummypath / 'dummy_stdin.c'), str(dummypath / 'dummy_input.txt')) == "It takes 8 bits to represent 220\n"
 
 
+@pytest.mark.integration
+def test_algorithm_gcd():
+    assert soSorryYouLose(str(algorithmpath / 'algorithm_gcd.c'), str(algorithmpath / 'algorithm_input.txt')) == "There Greatest Common Divisor of 256 and 576 is 64\n"
+
+
+@pytest.mark.integration
+def test_algorithm_lcm():
+    assert soSorryYouLose(str(algorithmpath / 'algorithm_lcm.c'), str(algorithmpath / 'algorithm_input.txt')) == "There Lowest Common Multiple of 256 and 576 is 2304\n"
+	
+	
+@pytest.mark.integration
+def test_algorithm_prime_numbers():
+    assert soSorryYouLose(str(algorithmpath / 'algorithm_prime_numbers.c'), str(algorithmpath / 'algorithm_input.txt')) == "There are 3245 prime numbers from 2 to 29999\n"	
+	
+
+@pytest.mark.integration
+def test_algorithm_fibonacci():
+    assert soSorryYouLose(str(algorithmpath / 'algorithm_fibonacci.c'), str(algorithmpath / 'algorithm_input.txt')) == "The 23 number of Fibonacci is 28657\n"	
+	
+	
 @pytest.mark.integration
 def test_runner_compile_error():
     try:
