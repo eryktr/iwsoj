@@ -14,48 +14,27 @@ int coefficient(int n, int k) {
 	return result;
 }
 
-void printTriangle(FILE *wFile, int n) {
+void printTriangle(int n) {
     for (int i = 0; i < n; i++) 
     {
 		for (int j = 0; j <= i; j++) { 
-            fprintf(wFile,"%d ", coefficient(i, j));
+            printf("%d ", coefficient(i, j));
 		}
-        fprintf(wFile,"\n"); 
+        printf("\n"); 
     } 
 }
 
-int main(int argc, char *argv[]){
-	char *rFile_name;
-	char *wFile_name;
-	FILE *rFile;
-	FILE *wFile;
-	float number;
-	if (argc>=3) {
-		rFile_name = argv[1];
-		wFile_name = argv[2];
-		rFile = fopen(rFile_name,"r");
-		wFile = fopen(wFile_name,"w");
-		if (rFile==NULL) {
-            fprintf( stderr, "error\n");
-            return 1;
-        }
-		if (wFile==NULL) {
-            fprintf( stderr, "error\n");
-            return 1;			
-		}
-		while (fscanf(rFile, "%f", &number) > 0)
-        {
-			if (number>=1 && number<=30) {
-				printTriangle(wFile, number);
-			} else if (number>30) {
-				fprintf(wFile,"Parameter is too much!\n");
-			} else {
-				fprintf(wFile,"Parameter is below 1!\n");
-			}
-        }
-		fclose(rFile);
-		fclose(wFile);
-
+int main(void)
+{
+	int n;
+	while (scanf("%d\n",&n)!=EOF) {
+		if (n>=1 && n<=30) {
+			printTriangle(n);
+		} else if (n>30) {
+			printf("Parameter is too much!\n");
+		} else {
+			printf("Parameter is below 1!\n");
+		} 
 	}
-	
+
 }
