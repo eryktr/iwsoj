@@ -6,9 +6,11 @@ import logging
 
 from collections import Mapping
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 
-from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError
+from docker.errors import ContainerError
+
+from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError, TimeoutError, OutOfMemoryError
 
 logging.basicConfig()
 _logger = logging.getLogger(__name__)
@@ -47,7 +49,7 @@ class Lang(enum.Enum):
         try:
             return _extmap[ext]
         except KeyError:
-            raise UnsupportedLangError("."+codefpath.split(".")[-1])
+            raise UnsupportedLangError("." + codefpath.split(".")[-1])
 
     def tostring(self):
         return next(name for name, val in Lang.__members__.items() if val.value == self.value)
@@ -84,11 +86,14 @@ def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
     os.remove(os.path.join(os.getcwd(), os.path.basename(stdinfile_path)))
 
 
-def soSorryYouLose(codefpath: str, stdinfpath: str) -> str:
+def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
+                   time_limit: Union[float, None] = None) -> str:
     """
     Executes the
     :param codefpath: The path to the code to be run
     :param stdinfpath: The path to the input file
+    :param mem_limit: The memory limit of the script, e.g. 128m, 32k, 2g
+    :param time_limit: Maximum number of seconds (as a float) that the program can run, e.g. 2.5, 7.0
     :return: stdout of both the compile and the run step of the file in question
     """
 
@@ -102,9 +107,18 @@ def soSorryYouLose(codefpath: str, stdinfpath: str) -> str:
         ctx2cwd(dockerfile_path, codefpath, stdinfpath)
         short_codefname = os.path.basename(codefpath)
         short_stdinfname = os.path.basename(stdinfpath)
-        dockerc.images.build(path=os.getcwd(), buildargs={"fpath": short_codefname, "stdinfpath": short_stdinfname}, tag=imagetag, rm=True)
-        info = dockerc.containers.run(imagetag, remove=True)
+        cmd = (f"timeout {time_limit}" if time_limit else '') + " /runner/run.sh"
+        dockerc.images.build(path=os.getcwd(), buildargs={"fpath": short_codefname, "stdinfpath": short_stdinfname},
+                             tag=imagetag, rm=True)
+        info = dockerc.containers.run(imagetag, mem_limit=mem_limit, command=cmd, remove=True)
         return info.decode("utf8")
+    except ContainerError as err:
+        if err.exit_status == 124:
+            raise TimeoutError()
+        if err.exit_status == 137:
+            raise OutOfMemoryError()
+        else:
+            raise err
 
     finally:
         cwdctxcleanup(dockerfile_path, codefpath, stdinfpath)
