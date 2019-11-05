@@ -22,13 +22,13 @@ def test_api_submissions(valid_user_serializer, valid_task_serializer):
 
     request = factory.post("/api/submissions/", data=data)
     force_authenticate(request, user=user)
-    response=view(request)
+    response = view(request)
     assert response.status_code == HTTP_201_CREATED
     submission_id = response.data['id']
 
     request = factory.get("/api/submissions/" + submission_id + "/")
     force_authenticate(request, user=user)
-    response=view(request, pk=submission_id)
+    response = view(request, pk=submission_id)
     assert response.data['sourceCode'] == data['sourceCode']
 
 

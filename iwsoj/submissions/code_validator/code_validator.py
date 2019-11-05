@@ -22,7 +22,6 @@ def validate_code(sourceCode, language_name, task):
         os.remove(code_file)
         os.remove(input_file)
 
-    print('code output ' + output)
     ok = judge(task, output)
     if ok:
         return Status.OK,
