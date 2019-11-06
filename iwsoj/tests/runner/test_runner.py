@@ -6,7 +6,7 @@ import pytest
 from docker.errors import ContainerError
 
 from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError, TimeoutError, OutOfMemoryError
-from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose
+from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose, get_volume_path
 
 
 @pytest.mark.parametrize(
@@ -42,6 +42,20 @@ def test_lang_fromfile_path_too_long():
     with pytest.raises(PathTooLongError) as err:
         Lang.from_file(pth)
     assert str(err.value) == f"Path too long: {pth}"
+
+
+@pytest.mark.parametrize(
+    "lang, expected_ending",
+    [
+        (Lang.Java, os.path.join("iwsoj", "volume", "java")),
+        (Lang.Go, os.path.join("iwsoj", "volume", "go")),
+        (Lang.Py3, os.path.join("iwsoj", "volume", "py3")),
+        (Lang.C, os.path.join("iwsoj", "volume", "c")),
+        (Lang.Cpp, os.path.join("iwsoj", "volume", "cpp"))
+    ]
+)
+def test_get_volume(lang, expected_ending):
+    assert get_volume_path(lang).endswith(expected_ending)
 
 
 @pytest.mark.parametrize(
@@ -85,7 +99,6 @@ inputpath = str(dummypath / "dummy_input.txt")
 def test_runner_fails_code_file_doesnt_exist():
     with pytest.raises(FileNotFoundError):
         soSorryYouLose("/path/to/nowhere.c", inputpath)
-
 
 
 @pytest.mark.integration

@@ -1,4 +1,4 @@
 FROM python:3.7
 
-CMD chmod +x /runner/run.sh; /runner/run.sh
+CMD  /runner/run.sh
 

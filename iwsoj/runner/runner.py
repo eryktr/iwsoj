@@ -1,5 +1,7 @@
 import os
 import enum
+import subprocess
+
 import docker
 import shutil
 import logging
@@ -8,7 +10,7 @@ from collections import Mapping
 from pathlib import Path
 from typing import Any, Union, Optional, Dict
 
-from docker.errors import ContainerError
+from docker.errors import ContainerError, ImageNotFound
 
 from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError, TimeoutError, OutOfMemoryError
 
@@ -63,12 +65,28 @@ image_tags: Dict[Lang, str] = {
     Lang.Py3: "iwsojpy",
     Lang.Java: "iwsojjunk",
     Lang.Cpp: "iwsojcpp",
-    Lang.Go: "oneToRuleThemAll"
+    Lang.Go: "onetoruleall"
+}
+
+
+extensions: Dict[Lang, str] = {
+    Lang.C: ".c",
+    Lang.Py3: ".py",
+    Lang.Java: ".java",
+    Lang.Cpp: ".cpp",
+    Lang.Go: ".go"
 }
 
 
 def images_already_built() -> bool:
-    return ALREADY_BUILT or (_docker.images.get(n) for n in image_tags.values())
+    # Yes there really is no better way but to use
+    # a named fifo
+    global ALREADY_BUILT
+    pipe = subprocess.Popen(["docker", "image", "ls"], stdout=subprocess.PIPE)
+    out = pipe.communicate()
+    built = all([tag in out for tag in image_tags.values()])
+    ALREADY_BUILT = ALREADY_BUILT or built
+    return built
 
 
 def build_images() -> None:
@@ -98,7 +116,7 @@ def get_volume_path(lang: Lang):
     return str(Path.cwd() / "volume" / lang.tostring().lower())
 
 
-def ctx2cwd(volume_path, codefile_path, stdinfile_path) -> None:
+def ctx2cwd(volume_path, codefile_path, stdinfile_path, ext) -> None:
     """
     Copies the context of the build process
     into the current working directory
@@ -106,9 +124,14 @@ def ctx2cwd(volume_path, codefile_path, stdinfile_path) -> None:
     :param codefile_path: The path to the source file
     :param stdinfile_path: The path to the file containing the input to the program
     """
-
+    codefname = os.path.basename(codefile_path)
+    stdinfname = os.path.basename(stdinfile_path)
+    target_codef = os.path.join(volume_path, codefname)
+    target_stdinf = os.path.join(volume_path, stdinfname)
     shutil.copy(codefile_path, volume_path)
-    shutil.copy(stdinfile_path, os.getcwd())
+    shutil.copy(stdinfile_path, volume_path)
+    os.rename(target_codef, os.path.join(volume_path, f"target{ext}"))
+    os.rename(target_stdinf, os.path.join(volume_path, "input.txt"))
 
 
 def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
@@ -117,7 +140,6 @@ def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
     the lower the likelihood that you might use it.
     """
     to_delete = (os.path.basename(f) for f in os.listdir(dockerfile_path))
-
     for f in to_delete:
         os.remove(os.path.join(os.getcwd(), f))
     os.remove(os.path.join(os.getcwd(), os.path.basename(codefile_path)))
@@ -138,10 +160,10 @@ def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
         build_images()
     lang = Lang.from_file(codefpath)
     imagetag = get_tag(lang)
-    dockerfile_path = get_dockerfile_dir(lang)
+    ext = extensions[lang]
     vol = get_volume_path(lang)
     try:
-        ctx2cwd(dockerfile_path, codefpath, stdinfpath)
+        ctx2cwd(vol, codefpath, stdinfpath, ext)
         volumes = {
             vol: {
                 "bind": "/runner",
@@ -158,6 +180,3 @@ def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
             raise OutOfMemoryError()
         else:
             raise err
-
-    finally:
-        cwdctxcleanup(dockerfile_path, codefpath, stdinfpath)
