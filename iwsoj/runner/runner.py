@@ -6,7 +6,7 @@ import logging
 
 from collections import Mapping
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Union, Optional, Dict
 
 from docker.errors import ContainerError
 
@@ -15,6 +15,9 @@ from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongErro
 logging.basicConfig()
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
+_docker = docker.from_env()
+
+ALREADY_BUILT: bool = False
 
 
 class Lang(enum.Enum):
@@ -55,22 +58,57 @@ class Lang(enum.Enum):
         return next(name for name, val in Lang.__members__.items() if val.value == self.value)
 
 
+image_tags: Dict[Lang, str] = {
+    Lang.C: "iwsojc",
+    Lang.Py3: "iwsojpy",
+    Lang.Java: "iwsojjunk",
+    Lang.Cpp: "iwsojcpp",
+    Lang.Go: "oneToRuleThemAll"
+}
+
+
+def images_already_built() -> bool:
+    return ALREADY_BUILT or (_docker.images.get(n) for n in image_tags.values())
+
+
+def build_images() -> None:
+    """
+    This method takes some time to execute, yet gives an enormous
+    boost in terms of future executions.
+    """
+    global ALREADY_BUILT
+    for lang, tag in image_tags.items():
+        dockerfile = os.path.join(get_dockerfile_dir(lang), "Dockerfile")
+        dockerfile_path_cwd = os.path.join(os.getcwd(), "Dockerfile")
+        shutil.copy2(dockerfile, dockerfile_path_cwd)
+        _docker.images.build(path=os.getcwd(), tag=tag, rm=True)
+    ALREADY_BUILT = True
+    os.remove(os.path.join(os.getcwd(), "Dockerfile"))
+
+
+def get_tag(lang: Lang) -> Optional[str]:
+    return image_tags.get(lang)
+
+
 def get_dockerfile_dir(lang: Lang) -> str:
     return str(Path(__file__).parent / 'imgs' / lang.tostring().lower())
 
 
-def ctx2cwd(dockerfile_path, codefile_path, stdinfile_path) -> None:
+def get_volume_path(lang: Lang):
+    return str(Path.cwd() / "volume" / lang.tostring().lower())
+
+
+def ctx2cwd(volume_path, codefile_path, stdinfile_path) -> None:
     """
     Copies the context of the build process
     into the current working directory
-    :param dockerfile_path: The path to the directory containing dockerfile
+    :param volume_path: The path to the volume mapping to the selected lang
     :param codefile_path: The path to the source file
+    :param stdinfile_path: The path to the file containing the input to the program
     """
 
-    for f in os.listdir(dockerfile_path):
-        shutil.copy2(os.path.join(dockerfile_path, f), os.getcwd())
-    shutil.copy2(codefile_path, os.getcwd())
-    shutil.copy2(stdinfile_path, os.getcwd())
+    shutil.copy(codefile_path, volume_path)
+    shutil.copy(stdinfile_path, os.getcwd())
 
 
 def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
@@ -96,21 +134,22 @@ def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
     :param time_limit: Maximum number of seconds (as a float) that the program can run, e.g. 2.5, 7.0
     :return: stdout of both the compile and the run step of the file in question
     """
-
-    imagetag = "runner"
+    if not images_already_built():
+        build_images()
     lang = Lang.from_file(codefpath)
-
+    imagetag = get_tag(lang)
     dockerfile_path = get_dockerfile_dir(lang)
-    dockerc = docker.from_env()
-
+    vol = get_volume_path(lang)
     try:
         ctx2cwd(dockerfile_path, codefpath, stdinfpath)
-        short_codefname = os.path.basename(codefpath)
-        short_stdinfname = os.path.basename(stdinfpath)
+        volumes = {
+            vol: {
+                "bind": "/runner",
+                "mode": "rw"
+            }
+        }
         cmd = (f"timeout {time_limit}" if time_limit else '') + " /runner/run.sh"
-        dockerc.images.build(path=os.getcwd(), buildargs={"fpath": short_codefname, "stdinfpath": short_stdinfname},
-                             tag=imagetag, rm=True)
-        info = dockerc.containers.run(imagetag, mem_limit=mem_limit, command=cmd, remove=True)
+        info = _docker.containers.run(imagetag, mem_limit=mem_limit, command=cmd, volumes=volumes)
         return info.decode("utf8")
     except ContainerError as err:
         if err.exit_status == 124:
@@ -122,4 +161,3 @@ def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
 
     finally:
         cwdctxcleanup(dockerfile_path, codefpath, stdinfpath)
-        dockerc.images.remove(imagetag, force=True)
