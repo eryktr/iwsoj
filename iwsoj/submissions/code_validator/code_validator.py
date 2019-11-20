@@ -9,6 +9,13 @@ from runner.runner import soSorryYouLose
 
 
 def validate_code(sourceCode, language_name, task):
+    """
+    :param sourceCode: the code which is a solution of the task by a user
+    :param language_name: the name of the programming language of the task
+    :param task: selected task by a user
+	
+    :return: `Status <../html/submissions.html#submissions-status-module>`_
+    """
     language = Language.from_string(language_name)
     lang_suffix = "." + language.get_suffix()
 
@@ -30,6 +37,12 @@ def validate_code(sourceCode, language_name, task):
 
 
 def create_tmp_file(name, input):
+    """
+    :param name: name of the file or input 
+    :param input: content of the file or input
+	
+    :return: the path to created temporary file
+    """
     tmp_dir = os.path.join(os.getcwd(), "tmp")
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
