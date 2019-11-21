@@ -110,6 +110,9 @@ inputpath = str(dummypath / "dummy_input.txt")
 dummypath = Path.cwd() / 'runner' / 'dummy'
 algorithmpath = Path.cwd() / 'runner' / 'algorithm'
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -170,12 +173,15 @@ def test_runner_go_ok():
 def test_runner_c_stdin_ok():
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     codefpath = str(dummypath / "dummy_stdin.c")
     infile = str(dummypath / "dummy_input.txt")
     assert soSorryYouLose(codefpath, infile) == "It takes 8 bits to represent 220\n"
 
 
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     assert soSorryYouLose(str(dummypath / 'dummy_stdin.c'), str(dummypath / 'dummy_input.txt')) == "It takes 8 bits to represent 220\n"
@@ -239,6 +245,9 @@ def test_triangle()
 	
 	
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
