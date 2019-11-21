@@ -1,11 +1,8 @@
-
-
 function getTasks(n){
 
-    const api = "http://127.0.0.1:8000/api/tasks/"
+    const taskEndpoint = "http://127.0.0.1:8000/api/tasks/"
     var token = "Bearer " + localStorage.getItem('token');
     const params = {
-        
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -13,7 +10,7 @@ function getTasks(n){
         method: 'GET'
     };
     
-    fetch(api, params).then(res => {
+    fetch(taskEndpoint, params).then(res => {
         if (res.ok) {
             res.text().then(text => {
                 var tasks = JSON.parse(text);
@@ -26,6 +23,6 @@ function getTasks(n){
             })
             
     }).catch(
-        error => alert("Doesn't work2")
+        error => alert("Something went wrong")
     );
 }
