@@ -5,6 +5,7 @@ import os
 import pytest
 from docker.errors import ContainerError
 
+<<<<<<< Updated upstream
 from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError, TimeoutError, OutOfMemoryError
 from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose, get_volume_path
 
@@ -20,6 +21,17 @@ from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose, get_volume_p
         ("/complex/path/to/file.go", Lang.Go),
     ],
 )
+=======
+from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError
+from runner.runner import Lang, get_dockerfile_dir, soSorryYouLose
+from tasks.judge.judge import judge
+from tasks.models import Task
+
+
+@pytest.mark.parametrize("string, lang",
+                         [("helloworld.c", Lang.C), ("byeworld.py", Lang.Py3), ("plsno.java", Lang.Java),
+                          ("csharp.cpp", Lang.Cpp), ("goaway.go", Lang.Go), ("/complex/path/to/file.go", Lang.Go)])
+>>>>>>> Stashed changes
 def test_lang_fromfile_ok(string, lang):
     assert Lang.from_file(string) is lang
 
@@ -91,8 +103,16 @@ def test_get_dockerfile_dir(lang, end):
     assert get_dockerfile_dir(lang).endswith(end)
 
 
+<<<<<<< Updated upstream
 dummypath = Path.cwd() / "runner" / "dummy"
 inputpath = str(dummypath / "dummy_input.txt")
+=======
+dummypath = Path.cwd() / 'runner' / 'dummy'
+algorithmpath = Path.cwd() / 'runner' / 'algorithm'
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
 
 @pytest.mark.integration
@@ -148,11 +168,80 @@ def test_runner_go_ok():
 
 @pytest.mark.integration
 def test_runner_c_stdin_ok():
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     codefpath = str(dummypath / "dummy_stdin.c")
     infile = str(dummypath / "dummy_input.txt")
     assert soSorryYouLose(codefpath, infile) == "It takes 8 bits to represent 220\n"
 
 
+=======
+=======
+>>>>>>> Stashed changes
+    assert soSorryYouLose(str(dummypath / 'dummy_stdin.c'), str(dummypath / 'dummy_input.txt')) == "It takes 8 bits to represent 220\n"
+	
+
+"""
+@pytest.mark.algo
+def test_addition_prime()
+	assert judge(Task     ,soSorryYouLose(str(algorithmpath / 'addition_prime.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true	
+	
+	
+@pytest.mark.algo
+def test_algorithm_gcd()
+	assert judge(Task      ,soSorryYouLose(str(algorithmpath / 'algorithm_gcd.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true
+	
+	
+@pytest.mark.algo
+def test_algorithm_lcm()
+	assert judge(Task      ,soSorryYouLose(str(algorithmpath / 'algorithm_lcm.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true	
+
+
+@pytest.mark.algo
+def test_algorithm_fibonacci()
+	assert judge(Task       ,soSorryYouLose(str(algorithmpath / 'algorithm_fibonacci.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true
+	
+	
+@pytest.mark.algo
+def test_algorithm_prime_numbers()
+	assert judge(Task     ,soSorryYouLose(str(algorithmpath / 'algorithm_prime_numbers.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true
+
+
+@pytest.mark.algo
+def test_cash_mashine()
+	assert judge(Task    ,soSorryYouLose(str(algorithmpath / 'cash_mashine.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true
+
+
+@pytest.mark.algo
+def test_coprime_integers()
+	assert judge(Task      ,soSorryYouLose(str(algorithmpath / 'coprime_integers.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true
+	
+
+@pytest.mark.algo
+def test_pascal()
+	assert judge(Task       ,soSorryYouLose(str(algorithmpath / 'pascal.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true	
+	
+
+@pytest.mark.algo
+def test_prime_numbers()
+	assert judge(Task       ,soSorryYouLose(str(algorithmpath / 'prime_numbers.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true	
+
+	
+@pytest.mark.algo
+def test_quadratic_equation()
+	assert judge(Task      ,soSorryYouLose(str(algorithmpath / 'quadratic_equation.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true	
+
+
+@pytest.mark.algo
+def test_triangle()
+	assert judge(Task      ,soSorryYouLose(str(algorithmpath / 'triangle.c'), str(algorithmpath / 'inputs' / 'input.in'))) == true	
+"""
+	
+	
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 @pytest.mark.integration
 def test_runner_compile_error():
     try:
