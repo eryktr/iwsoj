@@ -4,14 +4,14 @@ reg.addEventListener("submit", register)
 function register(e) {
     e.preventDefault();
 
-    var password = document.getElementById("inputPassword");
-    var username = document.getElementById("inputUserName");
+    var pswdInput = document.getElementById("inputPassword");
+    var usrInput = document.getElementById("inputUserName");
 
-    const api = "http://127.0.0.1:8000/api/token_auth/"
+    const loginEndpoint = "http://127.0.0.1:8000/api/token_auth/"
 
     var data = {
-        username: username.value,
-        password: password.value
+        username: pswdInput.value,
+        password: usrInput.value
     };
 
     const params = {
@@ -20,7 +20,7 @@ function register(e) {
         method: 'POST'
     };
 
-    fetch(api, params).then(res => {
+    fetch(loginEndpoint, params).then(res => {
         if (res.ok) {
             res.text().then(text => {
                 var token = JSON.parse(text).token;
@@ -34,6 +34,6 @@ function register(e) {
             })
             
     }).catch(
-        error => alert("Doesn't work2")
+        error => alert("Something went wrong")
     );
 }

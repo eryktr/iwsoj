@@ -4,18 +4,18 @@ reg.addEventListener("submit", register)
 function register(e) {
     e.preventDefault();
 
-    var password = document.getElementById("inputPassword");
-    var email = document.getElementById("inputEmail");
-    var username = document.getElementById("inputUserName");
-    var firstname = document.getElementById("inputFirstName");
+    var pswdInput = document.getElementById("inputPassword");
+    var emailInput = document.getElementById("inputEmail");
+    var usrInput = document.getElementById("inputUserName");
+    var nameInput = document.getElementById("inputFirstName");
 
-    const api = "http://127.0.0.1:8000/api/register/"
+    const regEndpoint = "http://127.0.0.1:8000/api/register/"
 
     var data = {
-        username: username.value,
-        first_name: firstname.value,
-        email: email.value,
-        password: password.value
+        username: usrInput.value,
+        first_name: nameInput.value,
+        email: emailInput.value,
+        password: pswdInput.value
     };
 
     const params = {
@@ -24,7 +24,7 @@ function register(e) {
         method: 'POST'
     };
 
-    fetch(api, params).then(res => {
+    fetch(regEndpoint, params).then(res => {
         if (res.ok) {
             alert("Registered");
             document.location.href = "login.html";
@@ -34,6 +34,6 @@ function register(e) {
             })
             
     }).catch(
-        error => alert("Doesn't work2")
+        error => alert("Something went wrong")
     );
 }
