@@ -1,7 +1,4 @@
-Make sure, that you have just installed Sphinx.
-If you haven't installed Sphinx, write in commandline:
-
-pip install -U Sphinx
+Make sure, that you have just installed Sphinx with all other requirements.
 
 If you have just installed Sphinx, write in commandline in folder docs/
 
