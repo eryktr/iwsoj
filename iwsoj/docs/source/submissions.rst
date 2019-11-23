@@ -31,7 +31,7 @@ submissions.api module
 |
 | The class protects access to submissions againts unauthenticated users. 
 |
-| The access is authenticated by AuthUserToken which is set in field **authentication_classes**. If program got uncorrect or non-existent token, the program would denied access to submissions.
+| The access is authenticated by AuthUserToken which is set in field **authentication_classes**. If program got uncorrect or non-existent token, the program would deny access to submissions.
 | We have the access thanks path: **api/submissions/** and method Bearer. Scheme of use method Bearer:
 |
 | "authorization: Bearer <AuthUserToken>"

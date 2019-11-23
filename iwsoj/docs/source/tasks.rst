@@ -30,7 +30,7 @@ tasks.api module
 |
 | The class protects access to tasks againts unauthenticated users. 
 |
-| The access is authenticated by AuthUserToken which is set in field **authentication_classes**. If program got uncorrect or non-existent token, the program would denied access to tasks.
+| The access is authenticated by AuthUserToken which is set in field **authentication_classes**. If program got uncorrect or non-existent token, the program would deny access to tasks.
 | We have the access thanks path: **api/tasks/** and method Bearer. Scheme of use method Bearer:
 |
 | "authorization: Bearer <AuthUserToken>"
@@ -59,7 +59,7 @@ tasks.complexity module
 |
 | Users usually want to know about the level of difficulty of the tasks and flirt only tasks of the similar level of difficulty.
 | There are a lot of tasks in the database of the different level of difficulty, from easy (1) to competitive (4).
-| The author of the task has to classify the exercise before he adds its to the table **tasks_task** .
+| The author of the task has to classify the exercise before he adds its to the table named **tasks_task** .
 |
 | The method named **toString** will help user to select all exercises with selected level of difficulty.
 

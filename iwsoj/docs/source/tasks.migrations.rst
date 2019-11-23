@@ -32,7 +32,7 @@ tasks.migrations.0002\_auto\_20191029\_1004 module
 --------------------------------------------------
 | `0002_auto_20191029_1004 source code <https://github.com/eryktr/iwsoj/blob/master/iwsoj/tasks/migrations/0002_auto_20191029_1004.py>`_
 |
-| That class is used intended to help program with performing operations between database and backend:
+| That class is intended to help program with performing operations between database and backend:
 
 - **rename field** : is used to rename the task
 - **add field** : is used to add an extra field to the table in the database

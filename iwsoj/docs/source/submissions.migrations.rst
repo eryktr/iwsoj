@@ -12,9 +12,9 @@ submissions.migrations.0001\_initial module
 |
 | If we want to transfer data between backend and database, it is important to ensure compatible format between them.
 |
-| In that program it is necessary to ensure:
+| In our program it is necessary to ensure:
 
-- **id** field : is an auto_created primary key, which is not serialized
+- **id** field : it is an auto_created primary key, which is not serialized
 - **createdate** field : it is completed by default with current date
 - every fields without error must be not-null
 

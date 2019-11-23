@@ -8,7 +8,7 @@ submissions.code\_validator.code\_validator module
 --------------------------------------------------
 | `code_validator source code <https://github.com/eryktr/iwsoj/blob/master/iwsoj/submissions/code_validator/code_validator.py>`_
 |
-| Function **create_tmp_file** is a function what is intended to create a temporary file to write a sourcecode of the user or file with input parameters.
+| Function **create_tmp_file** is a function what is intended to create a temporary file to write an user source code or file with input parameters.
 |
 | Function **validate_code** is a method to compile code and check if result is correct.
 | See below how the function works:

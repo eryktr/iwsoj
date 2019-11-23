@@ -10,7 +10,7 @@ users.serializers.user\_serializer module
 |
 | User_Serializer and Meta from file **user_serializer.py** are very important classes in our project.
 |
-| Thanks to the functions in these classes, we can check create and safe a new user.
+| Thanks to the functions in these classes, we can check creating and saving a new user.
 |
 | Before the registration UniqueValidator checks if the e-mail address matches the corresponding regular expression.
 
@@ -28,7 +28,7 @@ Method **create** is used to register a new user. There are four strings require
 |
 | **python3 iwsoj/manage.py runserver**
 |
-| If data from all required fields are correct, system try to register user.
+| If data from all required fields is correct, system try to register user.
 |
 | We use url path http://localhost:8000/api/register/  to register to the database. 
 

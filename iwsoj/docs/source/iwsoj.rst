@@ -8,9 +8,9 @@ iwsoj.settings module
 ---------------------
 | `settings.py source code <https://github.com/eryktr/iwsoj/blob/master/iwsoj/iwsoj/settings.py>`_
 |
-| In this file we set settings in our program. One of the most important is **BASE_DIRED**. It is a path to that file.
+| In this file we enter the settings for our program. One of the most important fields is **BASE_DIRED**. This is a path to that file.
 
-| In that file we can find other settings of out program like:
+| In that file we can find other settings of our program like:
 - **SECRET_KEY**
 - **INSTALLED_APPS** 
 - **REST_FRAMEWORK**
@@ -23,9 +23,9 @@ iwsoj.settings module
 - **LANGUAGE_CODE**
 - **TIME_ZONE**.
 
-| **SECRET_KEY** -- that is a parametr to encrypt and decrypt important informatation. Do not share it with third parties!
+| **SECRET_KEY** -- that is a parameter to encrypt and decrypt important informatation. Do not share it with third parties!
 |
-| **INSTALLED_APPS** -- that is a list of names of all applications that are enabled in this installation
+| **INSTALLED_APPS** -- that is a list of names of all applications that have arleady been installed
 |
 | **REST_FRAMEWORK** -- that is a toolkit for building Web APIs, currently we use only **rest_framework.authentication.TokenAuthentication**
 |
@@ -43,7 +43,7 @@ iwsoj.settings module
 
 
 | If we want to add or change somenting in our program, we have to check, if all of required settings are set here.
-| Otherwise our program in compile time raises a lot of errors.
+| Otherwise our program would raise a lot of errors in compile time.
 
 .. automodule:: iwsoj.settings
    :members:
@@ -85,7 +85,7 @@ iwsoj.views module
 ------------------
 | `views.py source code <https://github.com/eryktr/iwsoj/blob/master/iwsoj/iwsoj/views.py>`_
 |
-| Class urls.py methods to call static webstites collaborate with methods from this file. Currently we have only one function named home. Lets open the port 8000 is open and define a new configuration: 
+| Class urls.py methods are intended to call static webstites collaborate with methods from that file. Currently we have only one function named home. Let's open the port 8000 and define a new configuration: 
 |
 | python3 iwsoj/manage.py runserver 
 |
