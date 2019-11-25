@@ -715,6 +715,388 @@ False
 True
 False
 False');
+INSERT INTO "tasks_task" VALUES (28,'Char combinations','List all strings that are a combination of letters of the given word no longer than 4 characters in the input. Display results in alphabetical order. Do not repeat the same combinations! If the word is too long, return in output:
+ERROR: The word is too long.
+Example:
+Input:
+abc
+Output:
+abc
+acb
+bac
+bca
+cab
+cba
+Example:
+Input:
+abcdefghi
+Output:
+ERROR: The word is too long.','2019-11-25T09:44:08.207004Z',3,'ferdek
+zsi
+wiza
+anna
+babcia','ERROR: The word is too long.
+isz
+izs
+siz
+szi
+zis
+zsi
+aiwz
+aizw
+awiz
+awzi
+aziw
+azwi
+iawz
+iazw
+iwaz
+iwza
+izaw
+izwa
+waiz
+wazi
+wiaz
+wiza
+wzai
+wzia
+zaiw
+zawi
+ziaw
+ziwa
+zwai
+zwia
+aann
+anan
+anna
+naan
+nana
+nnaa
+ERROR: The word is too long.
+');
+INSERT INTO "tasks_task" VALUES (29,'Root Mean Square','Calculate RMS (Root Mean Square) for Integer numbers in input.
+Result in output must be a Float round to 2 digit numbers.
+If one of parameters is not an Integer, do not read it. Example:
+Input:
+2
+5
+3.12
+8
+kwakwa
+12
+Output:
+7.70
+','2019-11-25T10:27:08.207004Z',1,'6
+10
+abe
+33
+3.51
+2.52
+25','21.51');
+INSERT INTO "tasks_task" VALUES (30,'Min and Max','Select minimum and maximum Int numbers from input.
+If one of parameters is not an Integer, do not read it. Example:
+Input:
+23
+54
+3.12
+8
+kwakwa
+12
+Output:
+8 54
+','2019-11-25T10:35:08.207004Z',1,'63
+zsi
+105.5
+25
+11.4
+13
+42','13 63');
+INSERT INTO "tasks_task" VALUES (31,'Leap-year','Check, if the year is a leap-year.
+Example:
+Input:
+2004
+2005
+Output:
+True
+False','2019-11-25T11:26:08.207004Z',1,'1996
+1997
+2000
+2004
+2093
+2100
+2201','True
+False
+True
+True
+False
+False
+False
+');
+INSERT INTO "tasks_task" VALUES (32,'FIFA World Cup','This is the FIFA World Cup! We have a group with four teams:
+A, B, C, D. In input you will get all results of the matches.
+Read them and rank the team from the 1-st to the 4-th.
+Note 1: if 4 teams did not play the matches will all teams or you have read two results of the same match, return in output: ERROR
+Note 2: points for win - 3, points for draw - 1, points for lose - 0
+Note 3: tiebreaker:
+1. points
+2. goal difference in all matches
+3. higher number of goal scored
+4. result head-to-head between teams
+If two teams have equal all four points, return in output: DRAW
+Example:
+Input:
+A:B 3:1
+A:C 2:1
+A:D 5:2
+B:C 1:1
+B:D 1:0
+C:D 5:1
+Output:
+1 - A
+2 - C
+3 - B
+4 - D
+
+','2019-11-25T11:49:08.207004Z',3,'A:B 1:1
+A:C 1:1
+A:D 0:1
+B:C 1:0
+B:D 1:2
+C:D 4:1
+','1 - D
+2 - C
+3 - B
+4 - A
+');
+INSERT INTO "tasks_task" VALUES (33,'Multiplication prime numbers','Multiply prime numbers from 2 to n (INTEGER).
+Note:
+Remember of long long int type of the result.
+If n>30, return message in output: ERROR TOO LONG NUMBER
+Input:
+n
+Output:
+result
+Example:
+Input:
+14
+Output:
+30030
+','2019-11-25T13:35:08.207004Z',1,'40
+30
+20
+10
+','ERROR TOO LONG NUMBER
+340510170
+510510
+210
+');
+INSERT INTO "tasks_task" VALUES (34,'U2 system','Let''s take U2 eight-digit numbers, where the first digit means the sign.
+Write program to represent Integer between -128 and 127 in that system.
+Note:
+if you would read different value in input, return in output: ERROR
+Input:
+decimal_number
+Output:
+U2_representation
+Example:
+Input:
+100
+Output:
+01100100
+Input:
+-100
+Output:
+10011100','2019-11-25T14:21:08.207004Z',2,'15
+-52
+535
+24
+zloto
+-128
+127
+128
+-129
+0','00001111
+11001100
+ERROR
+00011000
+ERROR
+10000000
+01111111
+ERROR
+ERROR
+00000000
+');
+INSERT INTO "tasks_task" VALUES (35,'U1 system','Let''s take U1 eight-digit numbers, where the first digit means the sign.
+Write program to represent Integer between -127 and 127 in that system.
+Note:
+if you would read different value in input, return in output: ERROR
+Note:
+if you would read 0 in input, return in output: 00000000
+Input:
+decimal_number
+Output:
+U1_representation
+Example:
+Input:
+100
+Output:
+01100100
+Input:
+-100
+Output:
+10011011','2019-11-25T14:44:08.207004Z',2,'15
+-52
+535
+24
+zloto
+-127
+127
+128
+-128
+0','00000111
+11001011
+ERROR
+00011000
+ERROR
+10000000
+01111111
+ERROR
+ERROR
+00000000
+');
+INSERT INTO "tasks_task" VALUES (36,'Median','Determine median of Integer numbers in input.
+Do not read non-Integer parameters.
+Note:
+If there are two medians, calculate average of them and round it down.
+Input:
+all numbers
+Output:
+median
+
+Exampe:
+input:
+6
+1
+4
+2
+3
+5
+output:
+3','2019-11-25T15:52:08.207004Z',2,'17
+29
+kwakwa
+19
+24
+14
+16
+16.5
+dwa
+','18
+');
+INSERT INTO "tasks_task" VALUES (37,'Mode','Determine mode of Integer numbers in input.
+Do not read non-Integer parameters.
+Note:
+If there are two or more modes, sort them in ascending order.
+Input:.
+all numbers
+Output:
+median
+
+Exampe:
+input:
+6
+6
+1
+4
+2
+3
+1
+5
+output:
+1
+6
+','2019-11-25T16:01:08.207004Z',2,'17
+29
+17
+15
+15
+kwakwa
+19
+24
+14
+16
+16
+16.5
+dwa','15
+16
+17
+');
+INSERT INTO "tasks_task" VALUES (38,'Sum with palindrome','Write a program to calculate a sum of Integer value over 0 and its palidrome (ex. 136 -> 631). 
+Note 1: If the first ingredient is over 999999999, return in output:
+ERROR, TOO BIG NUMBER.
+Note 2: If the first ingredient is not an Integer value, return in output:
+ERROR, BAD INGREDIENT
+Example:
+Input:
+136
+Output:
+767
+','2019-11-25T17:17:08.207004Z',1,'-5
+18
+129
+1111111111
+abc','ERROR, BAD INGREDIENT
+99
+1050
+ERROR, TOO BIG NUMBER
+ERROR, BAD INGREDIENT
+');
+INSERT INTO "tasks_task" VALUES (39,'Longest Common Subsequence','Determine the Longest Common Subsequence of the two word.
+If there is more than one, sort them in ascending order.
+If one of the words is null or there aren''t any subsequence, return in input:
+NULL
+Input:
+word_1 word_2
+Output:
+subsequence
+Example:
+input:
+xxyxxyyxxx xyxyxy
+output:
+xyxyx xxyxy','2019-11-25T17:41:08.207004Z',2,'345 765
+','5
+2 3
+
+');
+INSERT INTO "tasks_task" VALUES (40,'Median of prime numbers','Determine median of Integer prime numbers in input.
+Do not read non-Integer prime parameters.
+Note:
+If there are two medians, calculate average of them and round it down.
+Input:
+all numbers
+Output:
+median
+
+Exampe:
+input:
+6
+1
+4
+2
+3
+5
+Only 2, 3 and 5 are prime numbers.
+output:
+3','2019-11-25T21:50:08.207004Z',1,'17
+29
+kwakwa
+19
+24
+14
+16
+16.5
+dwa','19
+');
 INSERT INTO "authtoken_token" VALUES ('d17b20651386f19dbda5bf40f1e4f36f21688677','2019-10-30 00:51:22.262918',1);
 INSERT INTO "authtoken_token" VALUES ('8e0e2219c9f3c674640a56e7c4952fa35928a284','2019-10-31 21:27:01.008862',3);
 INSERT INTO "authtoken_token" VALUES ('b97030b906f9df6676b7a0147ee5f60209873594','2019-11-02 06:01:19.929207',4);
