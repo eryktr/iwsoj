@@ -16,6 +16,11 @@ class SubmissionSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data) -> Submission:
+        """
+        :param validated_data: validated field of the submission (sourceCode, task, language)
+        
+        :return: model of the submission
+        """
         sourceCode = validated_data['sourceCode']
         task = validated_data['task']
         language = validated_data["language"]
