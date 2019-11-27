@@ -1,7 +1,7 @@
-var reg = document.querySelector("form")
-reg.addEventListener("submit", register)
+var log = document.querySelector("form")
+log.addEventListener("submit", login)
 
-function register(e) {
+function login(e) {
     e.preventDefault();
 
     var pswdInput = document.getElementById("inputPassword");
