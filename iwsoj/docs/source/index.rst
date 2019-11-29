@@ -10,6 +10,7 @@ Welcome to iwsoj's documentation!
    :maxdepth: 2
    :caption: Contents:
    
+   about_iwsoj
    iwsoj
    runner
    modules
