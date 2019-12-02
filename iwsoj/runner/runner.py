@@ -10,7 +10,7 @@ from collections import Mapping
 from pathlib import Path
 from typing import Any, Union, Optional, Dict
 
-from docker.errors import ContainerError, ImageNotFound
+from docker.errors import ContainerError
 
 from runner.error import UnsupportedLangError, InvalidPathError, PathTooLongError, TimeoutError, OutOfMemoryError
 
@@ -116,25 +116,31 @@ def get_volume_path(lang: Lang):
     return str(Path.cwd() / "volume" / lang.tostring().lower())
 
 
-def ctx2cwd(volume_path, codefile_path, stdinfile_path, ext) -> None:
+def ctx2cwd(volume_path, codefile_path, stdinfile_path1, stdinfile_path2, ext) -> None:
     """
     Copies the context of the build process
     into the current working directory
     :param volume_path: The path to the volume mapping to the selected lang
     :param codefile_path: The path to the source file
-    :param stdinfile_path: The path to the file containing the input to the program
+    :param stdinfile_path1: The path to the first file containing the input to the program
+    :param stdinfile_path2: The path to the second file containing the input to the program
     """
     codefname = os.path.basename(codefile_path)
-    stdinfname = os.path.basename(stdinfile_path)
+    stdinfname1 = os.path.basename(stdinfile_path1)
+    stdinfname2 = os.path.basename(stdinfile_path2)
     target_codef = os.path.join(volume_path, codefname)
-    target_stdinf = os.path.join(volume_path, stdinfname)
+    target_stdinf1 = os.path.join(volume_path, stdinfname1)
+    target_stdinf2 = os.path.join(volume_path, stdinfname2)
+
     shutil.copy(codefile_path, volume_path)
-    shutil.copy(stdinfile_path, volume_path)
     os.rename(target_codef, os.path.join(volume_path, f"target{ext}"))
-    os.rename(target_stdinf, os.path.join(volume_path, "input.txt"))
+    shutil.copy(stdinfile_path1, volume_path)
+    os.rename(target_stdinf1, os.path.join(volume_path, "input1.txt"))
+    shutil.copy(stdinfile_path2, volume_path)
+    os.rename(target_stdinf2, os.path.join(volume_path, "input2.txt"))
 
 
-def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
+def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path1, stdinfile_path2):
     """
     The bigger your understanding of what it does,
     the lower the likelihood that you might use it.
@@ -143,15 +149,17 @@ def cwdctxcleanup(dockerfile_path, codefile_path, stdinfile_path):
     for f in to_delete:
         os.remove(os.path.join(os.getcwd(), f))
     os.remove(os.path.join(os.getcwd(), os.path.basename(codefile_path)))
-    os.remove(os.path.join(os.getcwd(), os.path.basename(stdinfile_path)))
+    os.remove(os.path.join(os.getcwd(), os.path.basename(stdinfile_path1)))
+    os.remove(os.path.join(os.getcwd(), os.path.basename(stdinfile_path2)))
 
 
-def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
+def soSorryYouLose(codefpath: str, stdinfpath1: str, stdinfpath2: str, mem_limit: str = "256m",
                    time_limit: Union[float, None] = None) -> str:
     """
     Executes the
     :param codefpath: The path to the code to be run
-    :param stdinfpath: The path to the input file
+    :param stdinfpath1: The path to the first input file
+    :param stdinfpath2: The path to the second input file
     :param mem_limit: The memory limit of the script, e.g. 128m, 32k, 2g
     :param time_limit: Maximum number of seconds (as a float) that the program can run, e.g. 2.5, 7.0
     :return: stdout of both the compile and the run step of the file in question
@@ -163,7 +171,7 @@ def soSorryYouLose(codefpath: str, stdinfpath: str, mem_limit: str = "256m",
     ext = extensions[lang]
     vol = get_volume_path(lang)
     try:
-        ctx2cwd(vol, codefpath, stdinfpath, ext)
+        ctx2cwd(vol, codefpath, stdinfpath1, stdinfpath2, ext)
         volumes = {
             vol: {
                 "bind": "/runner",

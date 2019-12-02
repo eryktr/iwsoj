@@ -54,8 +54,10 @@ def valid_task_data():
         "title": "Simple task",
         "statement": "Multiply by two!",
         "complexity": 2,
-        "input": "1 input",
-        "output": "2 output"
+        "input_public": "1 input",
+        "output_public": "2 output",
+        "input_hidden": "1 input",
+        "output_hidden": "2 output"
     }
 
 
