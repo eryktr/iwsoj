@@ -8,39 +8,56 @@ from tasks.judge.judge import judge
 from runner.runner import soSorryYouLose
 
 
-def validate_code(sourceCode, language_name, task):
+def validate_code(source_code, language_name, task):
     """
-    :param sourceCode: the code which is a solution of the task by a user
+    :param source_code: the code which is a solution of the task by a user
     :param language_name: the name of the programming language of the task
     :param task: selected task by a user
-	
+
     :return: `Status <../html/submissions.html#submissions-status-module>`_
     """
     language = Language.from_string(language_name)
     lang_suffix = "." + language.get_suffix()
 
     try:
-        code_file = create_tmp_file("sourceCode" + lang_suffix, sourceCode)
-        input_file = create_tmp_file("input.txt", task.input)
-        output = soSorryYouLose(code_file, input_file)
+        code_file = create_tmp_file("sourceCode" + lang_suffix, source_code)
+        input_public_file = create_tmp_file("input0.txt", task.input_public)
+        input_hidden_file = create_tmp_file("tnput1.txt", task.input_hidden)
+        output = soSorryYouLose(code_file, input_public_file, input_hidden_file)
+    except MemoryError:
+        return Status.MLE,
+    except TimeoutError:
+        return Status.TLE,
     except ContainerError as err:
         return Status.CE, err.stderr.decode("utf-8")
     finally:
         os.remove(code_file)
-        os.remove(input_file)
+        os.remove(input_public_file)
+        os.remove(input_hidden_file)
 
-    ok = judge(task, output)
+    out = output.split("__SPLIT_PLACEHOLDER__\n")
+    ok = judge(task.output_public, out[0])
+    if not ok:
+        return Status.WA, \
+               "on test:\n" + \
+               task.input_public + \
+               "\nExpected output:\n" + \
+               task.output_public + \
+               "\ngot:\n" + \
+               out[0]
+
+    ok = judge(task.output_hidden, out[1])
     if ok:
         return Status.OK,
     else:
-        return Status.WA,
+        return Status.WA, "on hidden tests"
 
 
 def create_tmp_file(name, input):
     """
     :param name: name of the file or input 
     :param input: content of the file or input
-	
+
     :return: the path to created temporary file
     """
     tmp_dir = os.path.join(os.getcwd(), "tmp")

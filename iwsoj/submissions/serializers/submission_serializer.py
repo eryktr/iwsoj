@@ -28,6 +28,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
         status = validation_out[0]
         if status == Status.CE:
             error = validation_out[1]
+        elif status == Status.WA:
+            error = validation_out[1]
         else:
             error = None
 

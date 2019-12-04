@@ -7,11 +7,4 @@ def test_serializer_valid_task_definition(validserializer, validtask):
     j = JSONRenderer().render(validserializer.data)
     print(j)
     obj = json.loads(j)
-    assert obj["input"] == validtask.input
-
-
-def test_json_has_valid_fields(validserializer, validtask):
-    j = JSONRenderer().render(validserializer.data)
-    obj = json.loads(j)
-    for attr in [a for a in validtask.__dict__ if not a.startswith("_")]:
-        assert attr in obj
+    assert obj["statement"] == validtask.statement

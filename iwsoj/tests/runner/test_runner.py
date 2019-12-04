@@ -98,13 +98,13 @@ inputpath = str(dummypath / "dummy_input.txt")
 @pytest.mark.integration
 def test_runner_fails_code_file_doesnt_exist():
     with pytest.raises(FileNotFoundError):
-        soSorryYouLose("/path/to/nowhere.c", inputpath)
+        soSorryYouLose("/path/to/nowhere.c", inputpath, inputpath)
 
 
 @pytest.mark.integration
 def test_runner_fails_stdin_file_doesnt_exist():
     with pytest.raises(FileNotFoundError):
-        soSorryYouLose(str(dummypath / "dummy.c"), "/path/to/nowhere.txt")
+        soSorryYouLose(str(dummypath / "dummy.c"), "/path/to/nowhere.txt", "/path/to/nowhere.txt")
 
 
 @pytest.mark.parametrize(
@@ -113,44 +113,50 @@ def test_runner_fails_stdin_file_doesnt_exist():
 @pytest.mark.integration
 def test_runner_fails_for_invalid_path(path):
     with pytest.raises(ValueError):
-        soSorryYouLose(path, str(dummypath / "dummy_input.txt"))
+        soSorryYouLose(path, str(dummypath / "dummy_input.txt"), str(dummypath / "dummy_input.txt"))
 
 
 @pytest.mark.integration
 def test_runner_c_ok():
     codefpath = str(dummypath / "dummy.c")
-    assert soSorryYouLose(codefpath, inputpath) == "It takes 8 bits to represent 222\n"
+    expected = "It takes 8 bits to represent 222\n"
+    assert soSorryYouLose(codefpath, inputpath, inputpath) == expected + "__SPLIT_PLACEHOLDER__\n" + expected
 
 
 @pytest.mark.integration
 def test_runner_cpp_ok():
     codefpath = str(dummypath / "dummy.cpp")
-    assert soSorryYouLose(codefpath, inputpath) == "Distance from p1 and p2 is 0\n"
+    expected = "Distance from p1 and p2 is 0\n"
+    assert soSorryYouLose(codefpath, inputpath, inputpath) == expected + "__SPLIT_PLACEHOLDER__\n" + expected
 
 
 @pytest.mark.integration
 def test_runner_py3_ok():
     codefpath = str(dummypath / "dummy.py")
-    assert soSorryYouLose(codefpath, inputpath) == "The 10th Fib number is 55\n"
+    expected = "The 10th Fib number is 55\n"
+    assert soSorryYouLose(codefpath, inputpath, inputpath) == expected + "__SPLIT_PLACEHOLDER__\n" + expected
 
 
 @pytest.mark.integration
 def test_runner_java_ok():
     codefpath = str(dummypath / "dummy.java")
-    assert soSorryYouLose(codefpath, inputpath) == "Factorial of 4 is 24\n"
+    expected = "Factorial of 4 is 24\n"
+    assert soSorryYouLose(codefpath, inputpath, inputpath) == expected + "__SPLIT_PLACEHOLDER__\n" + expected
 
 
 @pytest.mark.integration
 def test_runner_go_ok():
     codefpath = str(dummypath / "dummy.go")
-    assert soSorryYouLose(codefpath, inputpath) == "GO somewhere else!\n"
+    expected = "GO somewhere else!\n"
+    assert soSorryYouLose(codefpath, inputpath, inputpath) == expected + "__SPLIT_PLACEHOLDER__\n" + expected
 
 
 @pytest.mark.integration
 def test_runner_c_stdin_ok():
     codefpath = str(dummypath / "dummy_stdin.c")
     infile = str(dummypath / "dummy_input.txt")
-    assert soSorryYouLose(codefpath, infile) == "It takes 8 bits to represent 220\n"
+    expected = "It takes 8 bits to represent 220\n"
+    assert soSorryYouLose(codefpath, infile, infile) == expected + "__SPLIT_PLACEHOLDER__\n" + expected
 
 
 @pytest.mark.integration
@@ -160,6 +166,7 @@ def test_runner_compile_error():
             soSorryYouLose(
                 str(dummypath / "dummy_iwontcompile.c"),
                 str(dummypath / "dummy_input.txt"),
+                str(dummypath / "dummy_input.txt")
             )
         )
     except ContainerError as err:
@@ -170,7 +177,7 @@ def test_runner_compile_error():
 def test_runner_timeout():
     codefpath = str(dummypath / 'goodnight.py')
     with pytest.raises(TimeoutError) as err:
-        soSorryYouLose(codefpath, str(dummypath / 'dummy_input.txt'), time_limit=1.0)
+        soSorryYouLose(codefpath, str(dummypath / 'dummy_input.txt'), str(dummypath / 'dummy_input.txt'), time_limit=1.0)
     assert str(err.value) == TimeoutError.FAIL_MSG
 
 
@@ -178,5 +185,5 @@ def test_runner_timeout():
 def test_runner_out_of_mem():
     codefpath = str(dummypath / 'heavyone.py')
     with pytest.raises(OutOfMemoryError) as err:
-        soSorryYouLose(codefpath, str(dummypath / 'dummy_input.txt'), mem_limit="4m", time_limit=100)
+        soSorryYouLose(codefpath, str(dummypath / 'dummy_input.txt'), str(dummypath / 'dummy_input.txt'), mem_limit="4m", time_limit=100)
     assert str(err.value) == OutOfMemoryError.FAIL_MSG
