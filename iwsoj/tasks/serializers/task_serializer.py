@@ -11,6 +11,11 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data) -> Task:
+        """
+        :param validated_data: validated field of the task (title, statement, complexity, input, output)
+        
+        :return: model of the task
+        """
         task = Task.objects.create(
             title=validated_data['title'],
             statement=validated_data['statement'],

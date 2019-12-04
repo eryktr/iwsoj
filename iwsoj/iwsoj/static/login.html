@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0059)https://getbootstrap.com/docs/4.3/examples/floating-labels/ -->
 <html lang="en">
 
 <head>
@@ -7,9 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Jekyll v3.8.5">
-  <title>Floating labels example · Bootstrap</title>
+  <title>iwsoj · Login</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/floating-labels/">
 
@@ -36,23 +33,19 @@
   </style>
   <!-- Custom styles for this template -->
   <link href="./css/floating-labels.css" rel="stylesheet">
+  <script src="src/login.js" defer></script>
 </head>
 
 <body>
   <form class="form-signin">
     <div class="text-center mb-4">
-      <h1 class="h3 mb-3 font-weight-normal">iwsoj</h1>
+      <h1 class="h3 mb-3 font-weight-normal"><a href="index.html">iwsoj</a></h1>
       <p>To view our application content please login or register</p>
     </div>
 
-    <div class="flex-row flex-wrap justify-content-around row mb-4">
-      <button class="btn btn-lg btn-primary double-button" type="submit">Login</button>
-      <button class="btn btn-lg btn-primary double-button" type="submit">Register</button>
-    </div>
-
     <div class="form-label-group">
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-      <label for="inputEmail">Email address</label>
+      <input type="userName" id="inputUserName" class="form-control" placeholder="User Name" required="" autofocus="">
+      <label for="inputUserName">User Name</label>
     </div>
 
     <div class="form-label-group">
@@ -60,15 +53,25 @@
       <label for="inputPassword">Password</label>
     </div>
 
+    <p>Don't have an account? <a href="register.html">Create one.</a></p>
+
     <div class="checkbox mb-3">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
   </form>
 
-
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
