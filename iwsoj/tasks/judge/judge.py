@@ -11,5 +11,4 @@ def judge(expected_out: str, output: str) -> bool:
     
     :return: **true** or **false** (if output and expected_out are equal or not) 
     """
-    output = output.strip()
-    return output == expected_out
+    return ' '.join(expected_out.split()) == ' '.join(output.split())

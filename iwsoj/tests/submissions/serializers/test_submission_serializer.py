@@ -26,10 +26,9 @@ def test_serializer_compiler_error_valid(mocker, valid_submission_data):
 @pytest.mark.django_db
 def test_serializer_wa(mocker, valid_submission_data):
     ss = SubmissionSerializer(valid_submission_data)
-    mocker.patch.object(ss, "_validate", autospec=True, return_value=(Status.WA,))
+    mocker.patch.object(ss, "_validate", autospec=True, return_value=(Status.WA,"error"))
     mocker.patch.object(ss, "_get_user", autospec=True, return_value=valid_submission_data['user'])
     submission = ss.create(valid_submission_data)
     assert submission.language == valid_submission_data['language']
     assert submission.status == Status.WA.value
-    assert submission.error is None
 
