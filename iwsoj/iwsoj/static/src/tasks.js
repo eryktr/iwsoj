@@ -1,5 +1,8 @@
 var tasks;
 var sender;
+var submissions;
+var isPassed = [];
+getAllTasks();
 
 function getAllTasks() {
 
@@ -17,22 +20,66 @@ function getAllTasks() {
         if (res.ok) {
             res.text().then(text => {
                 tasks = JSON.parse(text);
-                insertTasks();
+                getAllSubmissions();
             })
-        } else
+        } else {
             res.text().then(text => {
                 alert("Unauthorized");
             })
-
+        }
     }).catch(
         error => alert("Something went wrong")
     );
 }
 
+function getAllSubmissions(){
+
+    const submissionsEndpoint = "http://127.0.0.1:8000/api/submissions/";
+    var token = "Bearer " + localStorage.getItem('token');
+    const params = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        method: 'GET'
+    };
+
+    fetch(submissionsEndpoint, params).then(res => {
+        if (res.ok) {
+            res.text().then(text => {
+                submissions = JSON.parse(text);
+                for (sub of submissions){
+                    if (sub.status == 'Passed' || isPassed[sub.task] == true){
+                        isPassed[sub.task] = true;
+                    } else {
+                        isPassed[sub.task] = false;
+                    }
+                }
+                insertTasks();
+            })
+        } else {
+            alert("Unauthorized");
+        }
+    })
+
+}
+
 function insertTasks() {
-    var titles = '<table class="table"><tr><th>LP</th><th>Task</th><th>C</th><th>C++</th><th>GO</th><th>Python</th><th>Java</th></tr>';
-    for (const task of tasks) {
-        titles += '<tr><th>'+ task.id + '</th><th>' + task.title + '</th>';
+    var titles = '<table class="table"><tr class="bg-secondary"><th>LP</th><th>Task</th><th>Progress</th><th>C</th><th>C++</th><th>GO</th><th>Python</th><th>Java</th></tr>';
+    for (task of tasks) {
+        var progress = '';
+        var style = '';
+        if(isPassed[task.id] == true){
+            progress = '<th style="color:green">Passed</th>';
+            style = 'style="background-color: #99ff99"'
+        } else if (isPassed[task.id] == false) {
+            progress = '<th style="color:red">In Progress</th>';
+            style = 'style="background-color: #ffcc99"'
+        } else {
+            progress = '<th>Not Started</th>';
+        }
+        titles += '<tr ' + style + '><th>'+ task.id + '</th><th>' + task.title + '</th>';
+        titles += progress;
         titles += '<th><a href="javascript:showSingleTask(' + task.id + ', \'C\')">C</a></th>';
         titles += '<th><a href="javascript:showSingleTask(' + task.id + ', \'C++\')">C++</a></th>';
         titles += '<th><a href="javascript:showSingleTask(' + task.id + ', \'GO\')">GO</a></th>';
@@ -48,11 +95,11 @@ function showSingleTask(n, lang) {
     localStorage.setItem('task_id', n);
     localStorage.setItem('task_lang', lang);
     var task = tasks[n-1];
-    var idHTML = '<h3>' + task.id;
+    var idHTML = '<h3 style="display:block;margin:auto;text-align:center;font-size:6vh;background-color:#4287f5">' + task.id;
     var titleHTML = '. ' + task.title + '</h3>';
     var backButtonHTML = '<a href="javascript:insertTasks()">back</a>';
     var statementHTML = '<p>' + task.statement; + '</p>'
-    var formHTML = '<textarea id="codeArea" rows="30" cols="80"></textarea><input type="submit" value="Submit">'
+    var formHTML = '<textarea id="codeArea" rows="30" cols="80"></textarea><input type="submit" value="Submit"><textarea id="errorArea" rows="30" cols="80" readonly></textarea>'
     document.getElementById("tasks").innerHTML = idHTML + titleHTML + backButtonHTML + statementHTML;
     document.getElementById("sender").innerHTML = formHTML;
     if(lang == 'Java') {
@@ -89,16 +136,17 @@ function sendTask(e) {
         body : JSON.stringify(data),
         method: 'POST'
     };
-    console.log(JSON.stringify(data));
     fetch(submissionEndpoint, params).then(res =>{
         if (res.ok){
             res.text().then(text => {
                 var info = JSON.parse(text);
-                var toBePutIntoAlert = info.status;
+                var toBeShown = info.status;
                 if(info.error != null){
-                    toBePutIntoAlert += '\n ' + info.error;
+                    document.getElementById("errorArea").innerHTML = info.error;
+                } else {
+                    alert(info.status);
                 }
-                alert(toBePutIntoAlert);
+                
             });
         }
         else {
