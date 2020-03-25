@@ -9,3 +9,21 @@ Docs are generated using **Sphinx**. To build, you need to have it installed. Th
 
     cd doc
     make html
+
+## Environment setup
+Create a new python virtual environment (requires python >= 3.7) and install deps
+
+    python3 -m venv env
+    source env/bin/activate
+    pip3 install -r requirements.txt
+    
+
+## Tests
+Tests were written using **pytest**. In order to run them:
+
+    pytest -m "not integration"
+    
+Integration tests take a lot more of time for they run docker.
+
+    pytet -m "integration"
+    
