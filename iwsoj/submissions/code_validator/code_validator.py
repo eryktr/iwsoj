@@ -13,7 +13,7 @@ def validate_code(source_code, language_name, task):
     :param source_code: the code which is a solution of the task by a user
     :param language_name: the name of the programming language of the task
     :param task: selected task by a user
-
+	
     :return: `Status <../html/submissions.html#submissions-status-module>`_
     """
     language = Language.from_string(language_name)
